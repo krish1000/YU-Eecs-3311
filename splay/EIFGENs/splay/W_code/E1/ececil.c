@@ -345,6 +345,13 @@ EIF_TYPED_VALUE _A970_96 ( EIF_TYPED_VALUE(*f_ptr) (EIF_REFERENCE), EIF_TYPED_VA
 	return (FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTVF(5193, "splay_delete1", closed [1].it_r))(closed [1].it_r);
 }
 
+	/* EXAMPLE_TESTS splay_delete2 */
+EIF_TYPED_VALUE _A970_97 ( EIF_TYPED_VALUE(*f_ptr) (EIF_REFERENCE), EIF_TYPED_VALUE * closed, EIF_TYPED_VALUE * open)
+{
+	GTCX
+	return (FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTVF(5194, "splay_delete2", closed [1].it_r))(closed [1].it_r);
+}
+
 	/* EXAMPLE_TESTS splay_insert1 */
 EIF_TYPED_VALUE _A970_94 ( EIF_TYPED_VALUE(*f_ptr) (EIF_REFERENCE), EIF_TYPED_VALUE * closed, EIF_TYPED_VALUE * open)
 {

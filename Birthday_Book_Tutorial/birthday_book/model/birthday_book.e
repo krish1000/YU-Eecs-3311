@@ -90,7 +90,7 @@ feature -- Queries
 		do
 			create Result.make_empty -- empty array
 			-- TODO: complete the implementation of this query.
---			Result.compare_objects -- don't really need this as we add the reference objects (strings) into the Result array
+			Result.compare_objects -- don't really need this as we add the reference objects (strings) into the Result array
 			from
 				i := 1
 			until

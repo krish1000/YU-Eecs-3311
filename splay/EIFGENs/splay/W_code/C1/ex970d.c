@@ -139,6 +139,7 @@ static const struct desc_info desc_970[] = {
 	{EIF_NON_GENERIC(0x0197 /*203*/), 13700, 0xFFFFFFFF},
 	{EIF_GENERIC(NULL), 13701, 0xFFFFFFFF},
 	{EIF_NON_GENERIC(0x0197 /*203*/), 13702, 0xFFFFFFFF},
+	{EIF_NON_GENERIC(0x0197 /*203*/), 13703, 0xFFFFFFFF},
 };
 void Init970(void)
 {
@@ -146,7 +147,7 @@ void Init970(void)
 	IDSC(desc_970 + 1, 1, 969);
 	IDSC(desc_970 + 32, 312, 969);
 	IDSC(desc_970 + 33, 370, 969);
-	IDSC(desc_970 + 52, 368, 969);
+	IDSC(desc_970 + 52, 369, 969);
 	IDSC(desc_970 + 76, 366, 969);
 	IDSC(desc_970 + 87, 363, 969);
 }

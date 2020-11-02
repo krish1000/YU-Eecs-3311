@@ -36,7 +36,7 @@ feature -- boolean tests
 
 	t_always_passes: BOOLEAN
 		do
-			comment("t_always: a test always passing") -- Need to always add the semicolon, errors happen in terminal(Cmd)
+			comment("t_always_passes: a test always passing") -- Need to always add the semicolon, errors happen in terminal(Cmd)
 			Result := true
 			-- return Result
 		end
@@ -62,7 +62,7 @@ feature -- boolean tests
 		local
 			bd: BIRTHDAY -- declaring birthday obj
 		do
-			comment("t_create_new_bithday: create a valid instance of birthday")
+			comment("t_create_new_birthday: create a valid instance of birthday")
 			create bd.make (10, 15) -- command used as a constructor*
 			Result := bd.month = 10 and bd.day = 15
 			check Result end

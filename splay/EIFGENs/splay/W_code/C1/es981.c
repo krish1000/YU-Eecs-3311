@@ -10,15 +10,15 @@
 extern "C" {
 #endif
 
-extern void F981_7532(EIF_REFERENCE, EIF_TYPED_VALUE);
 extern void F981_7533(EIF_REFERENCE, EIF_TYPED_VALUE);
-extern EIF_TYPED_VALUE F981_7534(EIF_REFERENCE);
+extern void F981_7534(EIF_REFERENCE, EIF_TYPED_VALUE);
 extern EIF_TYPED_VALUE F981_7535(EIF_REFERENCE);
 extern EIF_TYPED_VALUE F981_7536(EIF_REFERENCE);
 extern EIF_TYPED_VALUE F981_7537(EIF_REFERENCE);
 extern EIF_TYPED_VALUE F981_7538(EIF_REFERENCE);
 extern EIF_TYPED_VALUE F981_7539(EIF_REFERENCE);
 extern EIF_TYPED_VALUE F981_7540(EIF_REFERENCE);
+extern EIF_TYPED_VALUE F981_7541(EIF_REFERENCE);
 extern void EIF_Minit981(void);
 
 #ifdef __cplusplus
@@ -41,7 +41,7 @@ extern "C" {
 #endif
 
 /* {ES_TEST_CASE}.set_bookmark_name */
-void F981_7532 (EIF_REFERENCE Current, EIF_TYPED_VALUE arg1x)
+void F981_7533 (EIF_REFERENCE Current, EIF_TYPED_VALUE arg1x)
 {
 	GTCX
 	char *l_feature_name = "set_bookmark_name";
@@ -65,12 +65,12 @@ void F981_7532 (EIF_REFERENCE Current, EIF_TYPED_VALUE arg1x)
 	RTLU(SK_REF,&arg1);
 	RTLU (SK_REF, &Current);
 	
-	RTEAA(l_feature_name, 980, Current, 0, 1, 13803);
+	RTEAA(l_feature_name, 980, Current, 0, 1, 13796);
 	RTSA(dtype);
 	RTSC;
 	RTME(dtype, 0);
 	RTGC;
-	RTDBGEAA(980, Current, 13803);
+	RTDBGEAA(980, Current, 13796);
 	RTCC(arg1, 980, l_feature_name, 1, eif_new_type(232, 0x01), 0x01);
 	RTIV(Current, RTAL);
 	if ((RTAL & CK_REQUIRE) || RTAC) {
@@ -84,11 +84,11 @@ label_1:
 	}
 body:;
 	RTHOOK(2);
-	RTDBGAA(Current, dtype, 5299, 0xF80000E8, 0); /* bookmark_name */
+	RTDBGAA(Current, dtype, 5300, 0xF80000E8, 0); /* bookmark_name */
 	tr1 = ((up1x = (FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTVF(17, "twin", arg1))(arg1)), (((up1x.type & SK_HEAD) == SK_REF)? (EIF_REFERENCE) 0: (up1x.it_r = RTBU(up1x))), (up1x.type = SK_POINTER), up1x.it_r);
 	tr1 = RTCCL(tr1);
 	RTAR(Current, tr1);
-	*(EIF_REFERENCE *)(Current + RTWA(5299, dtype)) = (EIF_REFERENCE) tr1;
+	*(EIF_REFERENCE *)(Current + RTWA(5300, dtype)) = (EIF_REFERENCE) tr1;
 	RTVI(Current, RTAL);
 	RTRS;
 	RTHOOK(3);
@@ -102,7 +102,7 @@ body:;
 }
 
 /* {ES_TEST_CASE}.set_case_name */
-void F981_7533 (EIF_REFERENCE Current, EIF_TYPED_VALUE arg1x)
+void F981_7534 (EIF_REFERENCE Current, EIF_TYPED_VALUE arg1x)
 {
 	GTCX
 	char *l_feature_name = "set_case_name";
@@ -126,12 +126,12 @@ void F981_7533 (EIF_REFERENCE Current, EIF_TYPED_VALUE arg1x)
 	RTLU(SK_REF,&arg1);
 	RTLU (SK_REF, &Current);
 	
-	RTEAA(l_feature_name, 980, Current, 0, 1, 13795);
+	RTEAA(l_feature_name, 980, Current, 0, 1, 13797);
 	RTSA(dtype);
 	RTSC;
 	RTME(dtype, 0);
 	RTGC;
-	RTDBGEAA(980, Current, 13795);
+	RTDBGEAA(980, Current, 13797);
 	RTCC(arg1, 980, l_feature_name, 1, eif_new_type(232, 0x01), 0x01);
 	RTIV(Current, RTAL);
 	if ((RTAL & CK_REQUIRE) || RTAC) {
@@ -145,14 +145,14 @@ label_1:
 	}
 body:;
 	RTHOOK(2);
-	RTDBGAA(Current, dtype, 5298, 0xF80000E8, 0); /* case_name */
+	RTDBGAA(Current, dtype, 5299, 0xF80000E8, 0); /* case_name */
 	tr1 = RTCCL(arg1);
 	RTAR(Current, tr1);
-	*(EIF_REFERENCE *)(Current + RTWA(5298, dtype)) = (EIF_REFERENCE) tr1;
+	*(EIF_REFERENCE *)(Current + RTWA(5299, dtype)) = (EIF_REFERENCE) tr1;
 	if (RTAL & CK_ENSURE) {
 		RTHOOK(3);
 		RTCT("case_name_set", EX_POST);
-		tr1 = ((up1x = (FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTWF(5298, dtype))(Current)), (((up1x.type & SK_HEAD) == SK_REF)? (EIF_REFERENCE) 0: (up1x.it_r = RTBU(up1x))), (up1x.type = SK_POINTER), up1x.it_r);
+		tr1 = ((up1x = (FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTWF(5299, dtype))(Current)), (((up1x.type & SK_HEAD) == SK_REF)? (EIF_REFERENCE) 0: (up1x.it_r = RTBU(up1x))), (up1x.type = SK_POINTER), up1x.it_r);
 		if (RTCEQ(tr1, arg1)) {
 			RTCK;
 		} else {
@@ -172,16 +172,6 @@ body:;
 }
 
 /* {ES_TEST_CASE}.passed */
-EIF_TYPED_VALUE F981_7534 (EIF_REFERENCE Current)
-{
-	EIF_TYPED_VALUE r;
-	r.type = SK_BOOL;
-	r.it_b = *(EIF_BOOLEAN *)(Current + RTWA(5296,Dtype(Current)));
-	return r;
-}
-
-
-/* {ES_TEST_CASE}.contract_violated */
 EIF_TYPED_VALUE F981_7535 (EIF_REFERENCE Current)
 {
 	EIF_TYPED_VALUE r;
@@ -191,17 +181,17 @@ EIF_TYPED_VALUE F981_7535 (EIF_REFERENCE Current)
 }
 
 
-/* {ES_TEST_CASE}.case_name */
+/* {ES_TEST_CASE}.contract_violated */
 EIF_TYPED_VALUE F981_7536 (EIF_REFERENCE Current)
 {
 	EIF_TYPED_VALUE r;
-	r.type = SK_REF;
-	r.it_r = *(EIF_REFERENCE *)(Current + RTWA(5298,Dtype(Current)));
+	r.type = SK_BOOL;
+	r.it_b = *(EIF_BOOLEAN *)(Current + RTWA(5298,Dtype(Current)));
 	return r;
 }
 
 
-/* {ES_TEST_CASE}.bookmark_name */
+/* {ES_TEST_CASE}.case_name */
 EIF_TYPED_VALUE F981_7537 (EIF_REFERENCE Current)
 {
 	EIF_TYPED_VALUE r;
@@ -211,7 +201,7 @@ EIF_TYPED_VALUE F981_7537 (EIF_REFERENCE Current)
 }
 
 
-/* {ES_TEST_CASE}.violation_tag */
+/* {ES_TEST_CASE}.bookmark_name */
 EIF_TYPED_VALUE F981_7538 (EIF_REFERENCE Current)
 {
 	EIF_TYPED_VALUE r;
@@ -221,22 +211,32 @@ EIF_TYPED_VALUE F981_7538 (EIF_REFERENCE Current)
 }
 
 
-/* {ES_TEST_CASE}.violation_type */
+/* {ES_TEST_CASE}.violation_tag */
 EIF_TYPED_VALUE F981_7539 (EIF_REFERENCE Current)
 {
 	EIF_TYPED_VALUE r;
+	r.type = SK_REF;
+	r.it_r = *(EIF_REFERENCE *)(Current + RTWA(5301,Dtype(Current)));
+	return r;
+}
+
+
+/* {ES_TEST_CASE}.violation_type */
+EIF_TYPED_VALUE F981_7540 (EIF_REFERENCE Current)
+{
+	EIF_TYPED_VALUE r;
 	r.type = SK_INT32;
-	r.it_i4 = *(EIF_INTEGER_32 *)(Current + RTWA(5301,Dtype(Current)));
+	r.it_i4 = *(EIF_INTEGER_32 *)(Current + RTWA(5302,Dtype(Current)));
 	return r;
 }
 
 
 /* {ES_TEST_CASE}.case */
-EIF_TYPED_VALUE F981_7540 (EIF_REFERENCE Current)
+EIF_TYPED_VALUE F981_7541 (EIF_REFERENCE Current)
 {
 	EIF_TYPED_VALUE r;
 	r.type = SK_REF;
-	r.it_r = *(EIF_REFERENCE *)(Current + RTWA(5302,Dtype(Current)));
+	r.it_r = *(EIF_REFERENCE *)(Current + RTWA(5303,Dtype(Current)));
 	return r;
 }
 

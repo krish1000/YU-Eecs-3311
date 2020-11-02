@@ -1,0 +1,37 @@
+--Undo/redo, multiple games with some undo/redo errors.
+--studenNTNTNTNTNT
+undo
+redo
+play(5,10,5,3)
+fire
+move(A,1)
+--
+move(E,9) -- error
+move(A,6) -- pass
+move(A,1) -- pass
+move(E,2) -- pass
+move(A,1) -- pass
+move(E,3) -- should be error
+move(E,3) -- should be error
+move(D,1) -- pass
+move(D,1) -- error
+--
+move(B,1) -- pass
+undo -- pass
+
+--
+move(C,2) -- pass
+pass -- pass
+undo -- pass 
+redo
+undo
+undo
+move(A,2)
+move(A,3)
+undo
+move(F,2)
+redo
+abort
+play(8,8,9,3)
+undo
+redo

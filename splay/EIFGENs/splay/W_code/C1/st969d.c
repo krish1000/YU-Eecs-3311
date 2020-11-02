@@ -197,7 +197,7 @@ void Init969(void)
 	IDSC(desc_969 + 1, 1, 968);
 	IDSC(desc_969 + 32, 312, 968);
 	IDSC(desc_969 + 33, 370, 968);
-	IDSC(desc_969 + 52, 368, 968);
+	IDSC(desc_969 + 52, 369, 968);
 	IDSC(desc_969 + 76, 366, 968);
 	IDSC(desc_969 + 87, 364, 968);
 }

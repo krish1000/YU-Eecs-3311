@@ -1,0 +1,19 @@
+  System State: default model state (0)
+->abort
+  System State: default model state (1)
+->undo
+  System State: default model state (2)
+->redo
+  System State: default model state (3)
+->pass
+  System State: default model state (4)
+->fire
+  System State: default model state (5)
+->move(A,1)
+  System State: default model state (6)
+->play(5,10,5,3)
+  System State: default model state (7)
+->play(5,10,5,3)
+  System State: default model state (8)
+->move(C,1)
+  System State: default model state (9)

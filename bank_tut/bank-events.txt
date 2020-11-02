@@ -1,0 +1,11 @@
+-- declaration of system name
+system bank
+-- declaration of event signatures
+new(id: STRING)
+-- create a new bank account for "id"
+deposit(id: STRING; amount: INTEGER)
+-- deposit "amount" into the account of "id"
+withdraw(id: STRING; amount: INTEGER)
+-- withdraw "amount" from the account of "id"
+transfer(id1: STRING; id2: STRING; amount: INTEGER)
+-- transfer "amount" from the account of "id1" to that of "id2"

@@ -72,9 +72,7 @@ feature -- splay
 			bst_int_int.insert (1, 1)
 			bst_int_int.insert (2, 2)
 			bst_int_int.insert (3, 3)
-
 			bst_int_int.splay (bst_int_int.nodes[1])
-
 			Result := bst_int_int.root = bst_int_int.nodes[1]
 		end
 
@@ -113,9 +111,7 @@ feature -- insert
 			comment ("splay_insert1: env_empty, insert 1, check the root's key")
 
 			env_empty
-
 			bst_int_int.insert(1, 1)
-
 			Result :=
 				bst_int_int.root.key ~ 1
 		end
@@ -125,6 +121,7 @@ feature -- delete
 	add_splay_delete_tests
 		do
 			add_boolean_case (agent splay_delete1)
+			add_boolean_case (agent splay_delete2)
 		end
 
 	splay_delete1: BOOLEAN
@@ -140,6 +137,32 @@ feature -- delete
 
 			Result :=
 				bst_int_int.count = 0
+
+		end
+
+	splay_delete2: BOOLEAN
+		local
+		do
+			comment ("splay_delete2: asdf")
+
+			env_empty
+
+			bst_int_int.insert (1, 1)
+			bst_int_int.insert (2, 2)
+			bst_int_int.insert (3, 3)
+			bst_int_int.insert (4, 4)
+			bst_int_int.insert (5, 5)
+			bst_int_int.insert (6, 6)
+			bst_int_int.insert (7, 7)
+			bst_int_int.insert (8, 8)
+			bst_int_int.insert (9, 9)
+			bst_int_int.insert (10, 10)
+
+			print(bst_int_int.out)
+			bst_int_int.delete (7)
+			print("%N" + "%N" + bst_int_int.out)
+			Result :=
+				bst_int_int.count = 9
 
 		end
 

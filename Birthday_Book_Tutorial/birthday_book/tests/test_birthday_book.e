@@ -19,13 +19,13 @@ feature -- Add tests
 			-- Boolean Tests
 			add_boolean_case (agent t_add)
 			add_boolean_case (agent t_get)
---			add_boolean_case (agent t_celebrate1)
+			add_boolean_case (agent t_celebrate1)
 
 			-- Violation tests
 			add_violation_case_with_tag ("non_existing_name", agent t_precond_add)
 			add_violation_case_with_tag ("name_added_to_end", agent t_postcond_add)
---			add_violation_case_with_tag ("every_name_in_result_is_an_existing_name", agent t_postcond_celebrate1)
---			add_violation_case_with_tag ("every_name_in_result_has_birthday_today", agent t_postcond_celebrate2)
+			add_violation_case_with_tag ("every_name_in_result_is_an_existing_name", agent t_postcond_celebrate1)
+			add_violation_case_with_tag ("every_name_in_result_has_birthday_today", agent t_postcond_celebrate2)
 		end
 
 feature -- Boolean Tests
@@ -104,41 +104,41 @@ feature -- Boolean Tests
 			end
 		end
 
---	t_celebrate1: BOOLEAN
---		local
---			bb: BIRTHDAY_BOOK
---			bd1, bd2, bd3, bd4, bd5: BIRTHDAY
---			n1: ARRAY[STRING]
---		do
---			comment("t_celebrate1: checking whether given a date it will return the names that have a bday on that date")
---			create bb.make_empty
---			Result := bb.count = 0 and bb.names.count = 0 and bb.birthdays.count = 0
---			check Result end -- checking if empty birthday book works
+	t_celebrate1: BOOLEAN
+		local
+			bb: BIRTHDAY_BOOK
+			bd1, bd2, bd3, bd4, bd5: BIRTHDAY
+			n1: ARRAY[STRING]
+		do
+			comment("t_celebrate1: checking whether given a date it will return the names that have a bday on that date")
+			create bb.make_empty
+			Result := bb.count = 0 and bb.names.count = 0 and bb.birthdays.count = 0
+			check Result end -- checking if empty birthday book works
 
---			create bd1.make (9, 14)
---			create bd2.make (3, 31)
---			create bd3.make (7, 2)
---			create bd4.make (5, 24)
---			create bd5.make (5, 24)
---			bb.add ("alan", bd1)
---			bb.add ("mark", bd2)
---			bb.add ("tom", bd3)
---			bb.add ("krish", bd4)
---			bb.add ("joemama", bd5)
+			create bd1.make (9, 14)
+			create bd2.make (3, 31)
+			create bd3.make (7, 2)
+			create bd4.make (5, 24)
+			create bd5.make (5, 24)
+			bb.add ("alan", bd1)
+			bb.add ("mark", bd2)
+			bb.add ("tom", bd3)
+			bb.add ("krish", bd4)
+			bb.add ("joemama", bd5)
 
---			n1 := bb.celebrate (create {BIRTHDAY}.make (5, 24)) -- this bday is found twice
---			Result :=
---				n1.count = 2
---				and
---				n1[1] ~ "krish" and n1[2] ~ "joemama"
---			check Result end
+			n1 := bb.celebrate (create {BIRTHDAY}.make (5, 24)) -- this bday is found twice
+			Result :=
+				n1.count = 2
+				and
+				n1[1] ~ "krish" and n1[2] ~ "joemama"
+			check Result end
 
---			n1 := bb.celebrate (create {BIRTHDAY}.make (1, 1)) -- this bday is non-existant
---			Result :=
---				n1.count = 0
---				and
---				not n1.valid_index (0) and not n1.valid_index (1)
---		end
+			n1 := bb.celebrate (create {BIRTHDAY}.make (1, 1)) -- this bday is non-existant
+			Result :=
+				n1.count = 0
+				and
+				not n1.valid_index (0) and not n1.valid_index (1)
+		end
 
 feature -- Violation Tests
 
@@ -164,33 +164,33 @@ feature -- Violation Tests
 			bd.add ("mark", create {BIRTHDAY}.make (8, 15)) -- the wrong implementation will replace bd.names[2] with bd.names[1]
 		end
 
---	t_postcond_celebrate1
---		local
---			bb: BIRTHDAY_BOOK_VIOLATING_CELEBRATE
---			n1: ARRAY[STRING]
---		do
---			comment("t_postcond_celebrate1: violates tag `every_name_in_result_is_an_existing_name`")
---			create bb.make_empty
---			bb.add ("alan", create {BIRTHDAY}.make (7, 2))
---			bb.add ("mark", create {BIRTHDAY}.make (8, 15))
---			bb.add ("john", create {BIRTHDAY}.make (8, 15))
---			bb.add ("jojo", create {BIRTHDAY}.make (5, 4))
+	t_postcond_celebrate1
+		local
+			bb: BIRTHDAY_BOOK_VIOLATING_CELEBRATE
+			n1: ARRAY[STRING]
+		do
+			comment("t_postcond_celebrate1: violates tag `every_name_in_result_is_an_existing_name`")
+			create bb.make_empty
+			bb.add ("alan", create {BIRTHDAY}.make (7, 2))
+			bb.add ("mark", create {BIRTHDAY}.make (8, 15))
+			bb.add ("john", create {BIRTHDAY}.make (8, 15))
+			bb.add ("jojo", create {BIRTHDAY}.make (5, 4))
 
---			n1 := bb.celebrate ( create {BIRTHDAY}.make (8, 15)) -- post condition violation
---		end
+			n1 := bb.celebrate ( create {BIRTHDAY}.make (8, 15)) -- post condition violation
+		end
 
---	t_postcond_celebrate2
---		local
---			bb: BIRTHDAY_BOOK_VIOLATING_CELEBRATE2
---			n1: ARRAY[STRING]
---		do
---			comment("t_postcond_celebrate2: violates tag `every_name_in_result_has_birthday_today`")
---			create bb.make_empty
---			bb.add ("alan", create {BIRTHDAY}.make (7, 2))
---			bb.add ("mark", create {BIRTHDAY}.make (8, 15))
---			bb.add ("john", create {BIRTHDAY}.make (8, 15))
---			bb.add ("jojo", create {BIRTHDAY}.make (5, 4))
+	t_postcond_celebrate2
+		local
+			bb: BIRTHDAY_BOOK_VIOLATING_CELEBRATE2
+			n1: ARRAY[STRING]
+		do
+			comment("t_postcond_celebrate2: violates tag `every_name_in_result_has_birthday_today`")
+			create bb.make_empty
+			bb.add ("alan", create {BIRTHDAY}.make (7, 2))
+			bb.add ("mark", create {BIRTHDAY}.make (8, 15))
+			bb.add ("john", create {BIRTHDAY}.make (8, 15))
+			bb.add ("jojo", create {BIRTHDAY}.make (5, 4))
 
---			n1 := bb.celebrate ( create {BIRTHDAY}.make (8, 15)) -- post condition violation
---		end
+			n1 := bb.celebrate ( create {BIRTHDAY}.make (8, 15)) -- post condition violation
+		end
 end

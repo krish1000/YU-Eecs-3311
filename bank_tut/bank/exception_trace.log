@@ -1,0 +1,42 @@
+
+bank: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ROOT                make @17               FALSE:                       
+<000000000654E5A8>  (From ETF_ROOT_INTERFACE)
+                                           Assertion violated.           Fail
+-------------------------------------------------------------------------------
+ROOT                make @17                                            
+<000000000654E5A8>  (From ETF_ROOT_INTERFACE)
+                                           Routine failure.              Rescue
+-------------------------------------------------------------------------------
+ROOT                root's creation                                     
+<000000000654E5A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+bank: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ROOT                make @17               FALSE:                       
+<00000000065A45A8>  (From ETF_ROOT_INTERFACE)
+                                           Assertion violated.           Fail
+-------------------------------------------------------------------------------
+ROOT                make @17                                            
+<00000000065A45A8>  (From ETF_ROOT_INTERFACE)
+                                           Routine failure.              Rescue
+-------------------------------------------------------------------------------
+ROOT                root's creation                                     
+<00000000065A45A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------

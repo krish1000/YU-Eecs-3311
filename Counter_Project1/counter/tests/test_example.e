@@ -40,11 +40,58 @@ feature -- tests
 
 	t_checking: BOOLEAN
 		local
-			s : STRING
+			imp: ARRAY[STRING]
+			old_imp: ARRAY[STRING]
+			s: STRING
 		do
-			s := "asdf"
-			Result := False = True and s[6] = 's'
+			comment("t_checking: string reeferencne")
+			imp := create {ARRAY[STRING]}.make_empty
+			s := "MARK"
+			imp.force("John", 1)
+			imp.force (s, 2)
+			imp.force ("yeeeboii", 3)
+--			imp[2] := s
+--			imp[3] := "yeboi"
+
+			old_imp := imp.twin -- shallow coppy
+
+			Result := old_imp[2] = imp[2] -- true cuz `s` is same obj
+			check Result end
+
+			Result := old_imp = imp.twin
+			check not Result end
+			s := "JIMMMMMMMMMM"
+			Result := old_imp ~ imp.twin
+			Check Result end
+
+			imp.force ("MARK", 2)
+			Result := old_imp ~ imp.twin
+			Check NOT Result end
+
+			imp.compare_objects -- only imp is compare obj
+			Result := old_imp ~ imp.twin
+			Check NOT Result end
+
+			old_imp.compare_objects -- both are compare objs, so string gets is_equal
+			Result := old_imp ~ imp.twin
+			Check Result end
+
+			Result := imp[2] = old_imp[2] -- false cuz imp2 points to a different string obj
+			Check NOT result end
+
+			Result := imp[2] ~ old_imp[2]
+			Check Result end
+
+
+			--Result := False = True and s[6] = 's'
 		end
+
+--	t_asdf: BOOLEAN
+--		local
+--			s :
+--		do
+--			
+--		end
 
 	t0: BOOLEAN
 		do

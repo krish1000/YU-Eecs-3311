@@ -200,6 +200,9 @@ feature -- Attributes
 				not attached Result
 		end
 
+	-- I ADDED THIS*************************8
+--	val1: INTEGER
+
 feature -- Status setting
 		-- All set commands except `set_to_internal`
 		-- are implemented. Do not modify.
@@ -388,36 +391,68 @@ feature -- Status Query
 			-- TODO: Implement this query so that the postcondition is satisfied.
 --			 attached left as l_1 and then left.count + 1
 --			 attached right as l_1 and then right.count + 1
+	--TRIED OUT THE HELPER METHOD, BUT REALIZED THAT VAL IS DIFFERENT FOR EACH NODE.. since its node dependent
+--				val1 := 0
+--				Current.count_helper1
+--				Result := val1
+-----------------------------------------------------------------
+--				if Current.is_external then  -- If external then return 0
+--					-- return result
+--				else
+--					if
+--						attached left as l_1
+----						and then
+----						attached l_1.left as l_1_left
+--					then
+--						Result := l_1.count + 1
 
-				if Current.is_external then  -- If external then return 0
-					Result := 0
-				else
---				if
---				attached left as a_left
---			then
---				a_left.parent := Current
---			end
+--					end
 
-					if
-						attached left as l_1
-					then
-						Result := Result + l_1.count + 1
-					end
+--					if
+--						attached right as l_1
+----						and then
+----						attached l_1.right as l_1_right
+--					then
+--						Result := l_1.count + 1
+--					end
 
-					if
-						attached right as l_1
-					then
-						Result := Result + l_1.count + 1
-					end
+--					Result := if attached left as l and then l.count  + 1 + if attached right as r and then r.count
 
 --					Result := 1 + attached left as l_1 and then l_1.count + attached right as l_2 and then l_2.count
-				end
+--				end
+
+			if Current.is_internal then
+				Result := 1 + count_helper1
+			end
+
+
 		ensure
 			correct_result:
 				-- TODO: Complete this postcondition.
 				-- Hint: the return value of this query (`Result`) is the same as the size
-				-- of the linear version (`nodes`) of the tree rooted at `Current`.
-				True
+				-- of the linear version (`nodes`) of the tree rooted at `Current`. CHANGED 2020-09-25
+				Result = nodes.count
+		end
+
+	-- Helper method for count
+	count_helper1: INTEGER
+		do
+			if Current.is_internal then
+				if
+					attached left as l_1 and then
+--					attached l_1.left as l_2 -- this works as well
+					not l_1.is_external
+				then
+					Result := 1 + Result + l_1.count_helper1
+				end
+				if
+					attached right as l_1 and then
+--					attached l_1.right as l_2 -- this works as well
+					not l_1.is_external
+				then
+					Result := 1 + l_1.count_helper1 + Result
+				end
+			end
 		end
 
 	min_node: TREE_NODE[K, V]
@@ -426,23 +461,86 @@ feature -- Status Query
 			current_is_not_external:
 				not is_external
 		do
-			-- TODO: Implement this query so that the postcondition is satisfied.
-			create Result.make_external
+			-- TODO: Implement this query so that the postcondition is satisfied. **** `CHANGED 2020-09-23`
+--			create Result.make_external -- I DID NOT ADD THIS
+--			Result := min_node_helper1(Current)
+			Result := Current.min_node_helper1
+
 		ensure
 			left_external_means_current_is_minimum:
 				-- TODO: Complete this postcondition.
-				-- Hint: `left` being external means `Current` is a leaf node.
-				True
+				-- Hint: `left` being external means `Current` is a leaf node. **** `CHANGED 2020-09-23`
+				attached Result.left as l_node1 and then l_node1.is_external -- if its not attached then left is void, thus left is an external node
 
 			result_is_minimum_in_this_subtree:
 				-- TODO: Complete this postcondition.
 				-- Hint: the `Result` is the smallest node among all the descendants.
-				True
+				---*************** HOW TO CHECK THIS!?!?!?!
+				-- do i traverse the whole tree and check for ALL that result is <= ?
+--				across  as  all  end
+--				true ------------- ************** CANT FIGURE IT OUTTTTTTTTTTTT*****************
+				Current.nodes[1] = Result
 
 			result_is_internal:
 				-- This postcondition is completed for you. Do not modify.
 				Result.is_internal
 		end
+
+	min_node_helper1: TREE_NODE[K, V]
+		do
+			Result := Current
+			if Current.is_internal then
+				if
+					attached left as l_1 and then
+--					attached l_1.left as l_2
+					not l_1.is_external
+				then
+					if l_1 < Current then
+						Result := l_1.min_node_helper1
+					end
+				end
+				if
+					attached right as l_1 and then
+--					attached l_1.right as l_2
+					not l_1.is_external
+				then
+					if l_1 < Current then
+						Result := l_1.min_node_helper1
+					end
+				end
+			else
+				Result := Current
+			end
+
+		end
+
+--	min_node_helper1(r_node: TREE_NODE[K, V]): TREE_NODE[K, V]
+--	do
+--		Result := r_node -- initalize r_node
+--		if Current.is_internal then
+--			if
+--				attached left as l_1 and then
+--				attached l_1.left as l_2
+--			then
+--				if Current < r_node then
+--					Result := Current -- else no need to change result as its the same,
+--									  -- only if current's key is less than result then change result
+--					Result := l_1.min_node_helper1 (Result)
+--				end
+--			end
+
+--			if
+--				attached right as l_1 and then
+--				attached l_1.right as l_2
+--			then
+--				if Current < r_node then
+--					Result := Current -- else no need to change result as its the same,
+--									  -- only if current's key is less than result then change result
+--					Result := l_1.min_node_helper1 (Result)
+--				end
+--			end
+--		end
+--	end
 
 	max_node: TREE_NODE[K, V]
 			-- Returns the node with maximum key from the tree rooted at `Current`.
@@ -451,21 +549,50 @@ feature -- Status Query
 				not is_external
 		do
 			-- TODO: Implement this query so that the postcondition is satisfied.
-			create Result.make_external
+--			create Result.make_external
+			Result := Current.max_node_helper1
 		ensure
 			right_external_means_current_is_maximum:
 				-- TODO: Complete this postcondition.
-				-- Hint: `right` being external means `Current` is a leaf node.
-				True
+				-- Hint: `right` being external means `Current` is a leaf node. ******`CHANGED 2020-09-23`
+				attached Result.right as r_node1 and then r_node1.is_external -- ADDED this
 
 			result_is_maximum_in_this_subtree:
 				-- TODO: Complete this postcondition.
 				-- Hint: the `Result` is the biggest node among all the descendants.
-				True
-
+--				True -- CANT FIGURE OUT
+				Current.nodes[nodes.count] = Result
 			result_is_internal:
 				-- This postcondition is completed for you. Do not modify.
 				Result.is_internal
+		end
+
+	max_node_helper1: TREE_NODE[K, V]
+		do
+			Result := Current
+			if Current.is_internal then
+				if
+					attached left as l_1 and then
+--					attached l_1.left as l_2
+					not l_1.is_external
+				then
+					if l_1 > Current then
+						Result := l_1.max_node_helper1
+					end
+				end
+				if
+					attached right as l_1 and then
+--					attached l_1.right as l_2
+					not l_1.is_external
+				then
+					if l_1 > Current then
+						Result := l_1.max_node_helper1
+					end
+				end
+			else
+				Result := Current
+			end
+
 		end
 
 feature -- Status report
@@ -480,19 +607,53 @@ feature -- Status report
 			-- Current node is internal and:
 			-- Case 2: Current node's key matches `p_key`.
 			-- Case 3: Current node's key is bigger than `p_key`.
-			-- Case 4: Current node's key is smaller than `p_key`.
-			create Result.make_external
+			-- Case 4: Current node's key is smaller than `p_key`. ******`CHANGED 2020-09-23`
+
+			Result := Current -- Initalizing
+			-- Case 1: Current node is external:
+			if Current.is_external then
+				Result := Current
+			end
+			--*******************ASK JACKIE WHAT IF KEY IS VOID?
+			-- WHAT DO WE RETURN???!?
+			-- ans from jackie : cant even input void key cuz it aint detachable
+
+			-- Current node is internal and:
+			-- Case 2: Current node's key matches `p_key`.
+			if attached Current.key as k_1 then
+
+				if k_1 = p_key then -- ***** what if key is void?
+					Result := Current
+				end
+
+				-- Case 3: Current node's key is bigger than `p_key`.
+				if k_1 > p_key then
+					if attached left as l_node then
+						Result := l_node.tree_search(p_key)
+					end
+				end
+
+				-- Case 4: Current node's key is smaller than `p_key`.
+				if k_1 < p_key then
+					if attached right as r_node then
+						Result := r_node.tree_search(p_key)
+					end
+				end
+			end
+
+
 		ensure
 			case_of_key_found:
 				-- TODO: Complete this postcondition.
 				-- Hint: When we found the node, the result must be the current node due to the recursive
-				-- nature of this query.
-				True
+				-- nature of this query. ******`CHANGED 2020-09-23`
+				key = p_key implies Result = Current -- works for test cases, but what if void?
 
 			case_of_key_not_found:
 				-- TODO: Complete this postcondition.
 				-- Hint: If the node is external, it means the `Result` must be the current node.
-				True
+				Current.is_external implies Result = Current
+
 
 		end
 
@@ -501,15 +662,17 @@ feature -- Status report
 			-- by searching the subtree rooted at `Current`.
 		do
 			-- TODO: Implement this query so that the postcondition is satisfied.
-			-- Hint: Think of various cases of search for `p_key`.
+			-- Hint: Think of various cases of search for `p_key`.  ******`CHANGED 2020-09-23`
 
+			Result := Current.tree_search (p_key).value
 		ensure
 			case_of_key_found:
 				-- TODO: Complete this postcondition.
 				-- Hint: `p_key` existing means that the return value is same as one we find within
-				-- 		 the same tree.
-				True
+				-- 		 the same tree.  ******`CHANGED 2020-09-23`
+				attached Result implies Result = Current.tree_search (p_key).value -- CHECK IF THIS IS CORRECT
 
+			-- TA WROTE THIS:
 			-- We do not worry about specifying the other case (`case_of_key_not_found`).
 			-- As an optional exercise, you are encouraged to think about how you might write it.
 		end
@@ -519,13 +682,18 @@ feature -- Status report
 			-- the key `p_key` among its descendants. Returns false otherwise.
 		do
 			-- TODO: Implement this command so that the postcondition is satisfied.
-			-- Hint: Think of various cases of search for `p_key`.
-
+			-- Hint: Think of various cases of search for `p_key`.  ******`CHANGED 2020-09-24`
+			Result := False -- if key aint attached
+			if
+				Current.tree_search (p_key).is_internal and Current.tree_search (p_key).key = p_key -- dont need attached?
+			then
+				Result := True
+			end
 		ensure
 			correct_search_result:
 				-- TODO: Complete this postcondition.
-				-- Hint: Result must be same as if we found the `p_key` from subtree rooted at `Current`.
-				True
+				-- Hint: Result must be same as if we found the `p_key` from subtree rooted at `Current`. ******`CHANGED 2020-09-24`
+				Result implies p_key = Current.tree_search (p_key).key
 		end
 
 	has_node (p_node: TREE_NODE[K,V]): BOOLEAN
@@ -534,13 +702,24 @@ feature -- Status report
 			-- Returns false otherwise.
 		do
 			-- TODO: Implement this command so that the postcondition is satisfied.
-			-- Hint: You may use previous queries.
+			-- Hint: You may use previous queries. ******`CHANGED 2020-09-24`
+			if attached p_node.key as p_key then
+--				Result := Current.has (p_key) --this also works
+				if Current.has (p_key) and then Current.value_search(p_key) = p_node.value then
+					Result := True
+				end
+			else
+				Result := False
+			end
 
 		ensure
 			correct_search_result:
 				-- TODO: Complete this postcondition.
 				-- Hint: Result must be same as the internal node we found from subtree rooted at `Current` with the key `p_key`.
-				True
+
+				Result implies
+				attached p_node.key as p_k and then
+				(Current.has (p_k) and p_node.value = Current.value_search (p_k))
 		end
 
 feature -- Conversion
@@ -553,23 +732,59 @@ feature -- Conversion
 			-- Hint: To satisfy the void safety required by the compiler,
 			-- you must first initialize the return value `Result`.
 			-- Notice that the static return type of this query is a deferred class `LIST`,
-			-- to create an object, you must use one of its effective descendant classes.
+			-- to create an object, you must use one of its effective descendant classes. ******`CHANGED 2020-09-24`
 
-			create {LINKED_LIST[TREE_NODE[K, V]]} Result.make
+--			create {LINKED_LIST[TREE_NODE[K, V]]} Result.make -- GIVEN
+
+			Result := create {LINKED_LIST[TREE_NODE[K, V]]}.make -- reinitalize the list via attribute
+
+			Current.nodes_inorder_helper1(Result)
+
+
 		ensure
 			number_of_nodes_not_changed:
 				-- This postcondition is completed for you. Do not modify.
 				count = old count
 			inorder_means_result_is_sorted_incrementally:
-				-- TODO: Complete this postcondition.
-				True
+				-- TODO: Complete this postcondition. ******`CHANGED 2020-09-24`
+				across
+					1 |..| (Result.count - 1) is l_i
+				all
+					Result[l_i] < Result[l_i+1]
+				end
 
 			no_tree_structure_changed:
 				-- TODO: Complete this postcondition.
 				-- Hint 1: the tree rooted at Current **before** calling `nodes` has
 				-- the same structure (defined by `is_same_tree`) as that **after** calling `nodes`.
 				-- Hint 2: Invoking `is_same_tree(node)` is effectively invoking `Current.is_same_tree(node)`.
-				True
+				-- ******`CHANGED 2020-09-24`
+--				True ------------------- NEEED TO IMPLEMENT IS SAME TREE
+				(old Current.deep_twin).is_same_tree (Current)
+		end
+
+	nodes_inorder_helper1(list1: LIST[TREE_NODE[K, V]]) -- Reference obj, will get changed even when placed into a method
+		do
+--			Result := list1
+			if Current.is_internal then
+				if
+					attached left as l_1 and then
+					not l_1.is_external
+				then
+					l_1.nodes_inorder_helper1(list1)
+				end
+
+				list1.force (Current) -- adding current node to list
+
+				if
+					attached right as l_1 and then
+					not l_1.is_external
+				then
+					l_1.nodes_inorder_helper1(list1)
+				end
+			else
+--				Result := list1 -- not needed this lline since we already have it at the top
+			end
 		end
 
 feature -- Helper features for postconditions
@@ -586,9 +801,87 @@ feature -- Helper features for postconditions
 			--			That is, you can just use ~ to compare the two nodes.
 			-- 2. Recursively, `Current`'s left subtree, if existing, is the same tree as other's left subtree, if existing.
 			--		And similarly for the `Current`'s right subtree and `other`'s right subtree.
+			Result := True
+			if Current.is_internal and other.is_internal then
 
+				if
+					(Result and attached left as l_1 and then attached other.left as l_2)
+					and then (l_1.is_internal and l_2.is_internal)
+				then
+					if l_1 ~ l_2 then
+
+						Result := l_1.is_same_tree(l_2)
+					else
+						Result := False
+					end
+				else
+					Result := False
+					if
+						(attached left as l_1 and then attached other.left as l_2)
+						and then (l_1.is_external and l_2.is_external)
+					then
+						Result := True -- if both are external then true
+					end
+				end
+
+				if
+					(Result and attached right as l_1 and then attached other.right as l_2)
+					and then (l_1.is_internal and l_2.is_internal)
+				then
+					if l_1 ~ l_2 then
+
+						Result := l_1.is_same_tree(l_2)
+
+					else
+						Result := False
+					end
+				else
+					Result := False
+					if
+						(attached right as l_1 and then attached other.right as l_2)
+						and then (l_1.is_external and l_2.is_external)
+					then
+						Result := True -- if both are external then true
+					end
+				end
+
+			else
+				Result := False -- if one of them is not internal therefore other tree has more nodes so its not the same, false
+				if Current.is_external and other.is_external then
+					Result := True
+				end
+			end
 		end
 
+--				if
+--					(attached left as l_1 and then
+--						not l_1.is_external)
+--					and
+--					(attached other.left as l_2 and then
+--						not l_2.is_external)
+--				then
+--					if (Current ~ other) then -- if current.is_equal(other)
+--						l_1.is_same_tree(l_2)
+--					else
+--						Result := False
+--					end
+--				end
+
+
+
+--				if
+--					attached right as l_1 and then -- if Current's right is attached and is internal
+--						not l_1.is_external
+--					and
+--					attached other.right as l_2 and then -- and if other's right is attached and is internal
+--						not l_2.is_external
+--				then									-- then check if both Current and other are same by content
+--					if (Current ~ other) then -- if current.is_equal(other)
+--						l_1.is_same_tree(l_2)
+--					else
+--						Result := False
+--					end
+--				end
 
 feature -- Out
 

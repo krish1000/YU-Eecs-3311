@@ -42,13 +42,13 @@ SYSTEM_IN_DYNAMIC_LIB = splay.dll
 OBJECTS = big_file_C1_c.o 
 
 OLDOBJECTS =  ro989.o ro989d.o ex970.o ex970d.o st969.o st969d.o es971.o es971d.o \
-	te968.o te968d.o es967.o es967d.o es965.o es965d.o es966.o es966d.o \
-	es981.o es981d.o es983.o es983d.o es982.o es982d.o es964.o es964d.o \
-	c_960.o c_960d.o da987.o da987d.o ab988.o ab988d.o da990.o da990d.o \
-	ti986.o ti986d.o ti975.o ti975d.o da991.o da991d.o da976.o da976d.o \
-	da985.o da985d.o da978.o da978d.o du984.o du984d.o da979.o da979d.o \
-	ti974.o ti974d.o ti973.o ti973d.o co980.o co980d.o ti972.o ti972d.o \
-	da977.o da977d.o gr963.o gr963d.o da962.o da962d.o da961.o da961d.o 
+	te968.o te968d.o es965.o es965d.o es967.o es967d.o es966.o es966d.o \
+	es964.o es964d.o es981.o es981d.o es983.o es983d.o es982.o es982d.o \
+	da987.o da987d.o c_960.o c_960d.o ab988.o ab988d.o da990.o da990d.o \
+	ti986.o ti986d.o ti976.o ti976d.o da985.o da985d.o du984.o du984d.o \
+	da977.o da977d.o da980.o da980d.o da991.o da991d.o da979.o da979d.o \
+	ti975.o ti975d.o ti974.o ti974d.o da978.o da978d.o gr963.o gr963d.o \
+	ti973.o ti973d.o co972.o co972d.o da962.o da962d.o da961.o da961d.o 
 
 all::  Cobj1.o
 
