@@ -1,0 +1,10 @@
+--Undo stufff
+play(5,10,5,2)
+fire
+move(A,1)
+--
+
+move(A,6) -- pass
+undo
+undo
+undo

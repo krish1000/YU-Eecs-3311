@@ -17,12 +17,14 @@ feature -- command
 				if
 					model.gcursor + 1 <= model.history.count
 				then
+					model.projectile_move (1) -- move DEM PROJECTILES FORWARD -- might need to change
 					model.cursor_add (1) -- move 1 forward in history
 					model.history[model.gcursor].execute -- re-execute the command
 
 					model.state_increase -- have to go foward 1 state
 
-					model.projectile_move (1) -- move DEM PROJECTILES FORWARD
+
+
 --					across
 --						model.projectiles is projectile1
 --					loop

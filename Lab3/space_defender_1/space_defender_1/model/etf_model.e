@@ -23,11 +23,15 @@ feature {NONE} -- Initialization
 			create error_msg.make_empty -- renamed s to error_msg
 			create cmd_msg.make_empty
 			create projectile_msg.make_empty
+			create projectile_history_msg.make_empty
+--			projectile_history_cursor := 0 -- for projectile history msgs' cursor
 
 			create history.make_empty -- holds command calls by user
 --			cursor := history.start
 			gcursor := 0 -- points at 0 index inital
 			projcursor := 0
+
+
 			------- Grid related  -------
 			create grid.make_empty
 			create letter.make_empty
@@ -41,6 +45,7 @@ feature {NONE} -- Initialization
 			errorState := 0
 			-------- Game related --------
 			ingame := false -- initally set to false (game hasn't started)
+			gameover := False
 			welcome1 := true
 			create starfighter_location -- empty tuple
 		end
@@ -50,7 +55,9 @@ feature -- model attributes
 	error_msg : STRING -- String for outputting error msgs, renamed s to error_msg
 	cmd_msg : STRING -- String for outputting command messages
 	projectile_msg : STRING
-
+	projectile_history_msg : ARRAY[STRING]
+--	projectile_history_cursor : INTEGER
+	projcursor: INTEGER
 	-- State values
 	state : INTEGER -- Integer stores State
 	errorState : INTEGER -- Integer stores state error counter
@@ -58,7 +65,7 @@ feature -- model attributes
 	-- Commands related
 	history : ARRAY[COMMANDS_MODEL]
 	gcursor: INTEGER
-	projcursor: INTEGER
+
 	-- Grid related
 	grid : ARRAY[ARRAY[STRING]] -- Array of Array of Strings stores the game grid ADDED
 	letter : ARRAY[STRING] -- Array of string stores letters A to J ADDED
@@ -69,6 +76,7 @@ feature -- model attributes
 	-- Game mechanics' related
 	welcome1 : BOOLEAN -- for the welcome message
 	ingame : BOOLEAN -- boolean if player is ingame true, else false ADDED
+	gameover: BOOLEAN
 	starfighter_location : TUPLE[cx: INTEGER;cy: INTEGER] -- X Y location ADDED
 	player_m : INTEGER -- max num of tiles player can move
 	project_m : INTEGER -- num of tiles projectile moves
@@ -107,13 +115,19 @@ feature -- I ADDED queries
 			create Result.make_empty
 			-- across loop grid and print
 				if grid.count > 0 then
-					Result.append ("  ") -- empty 2 at start
+					Result.append ("    ") -- empty 4 at start
 					-- Put the numbers ontop
 					across
 						1 |..| grid[1].count is l_i
 					loop
-						Result.append("  ")
-						Result.append(l_i.out)
+						if l_i <= 9 then
+							Result.append("  ")
+							Result.append(l_i.out)
+						else
+							Result.append(" ")
+							Result.append(l_i.out)
+						end
+
 					end
 					Result.append ("%N")
 				end
@@ -121,7 +135,7 @@ feature -- I ADDED queries
 				across
 					1 |..| grid.count is row_counter
 				loop
-					Result.append ("  ")
+					Result.append ("    ")
 					Result.append (letter[row_counter]) -- adds A B C ...
 					Result.append (" ")
 
@@ -155,6 +169,15 @@ feature -- model operations
 			state_increase
 		end
 
+	ingame_update(b: BOOLEAN)
+		do
+			ingame := b
+		end
+
+	gameover_update(b: BOOLEAN)
+		do
+			gameover := b
+		end
 	cmd_msg_update(msg: STRING)
 		do
 			cmd_msg := msg
@@ -196,6 +219,9 @@ feature -- model operations
 
 				--- RESETS ---
 				create history.make_empty -- reset history array
+				create projectiles.make_empty
+				create projectile_history_msg.make_empty
+				projcursor := 0
 				gcursor := 0 -- reset cursor to 0
 				cmd_msg.make_empty
 				------------------------------------------------------
@@ -224,6 +250,7 @@ feature -- model operations
 				project_m := project_mov
 				-- Player is ingame
 				ingame := True
+				gameover := False
 		end
 
 	abort -- stops game
@@ -233,16 +260,27 @@ feature -- model operations
 --				cmd_msg := "Game has been exited."
 				error_msg := "Game has been exited."
 				-- using error_msg, temp for now so grid wont appear
+
+				-- TESTING:
+				across
+					projectile_history_msg is s
+				loop
+					error_msg := error_msg + "%N..." + s
+				end
+
+
 			else
 				errorState_increase("Not in game.")
 			end
 		end
 
 	projectile_move(state_add: INTEGER)
+		local
+			s : STRING
 		do
 			--- RESET PROJECTILE MSG****
 --			projectile_msg := ""
-
+			create s.make_empty
 			-- across projectiles array
 			across
 				projectiles is projectile1
@@ -259,9 +297,10 @@ feature -- model operations
 
 					-- print projectile msgs, append to projectile_msg
 					-- "A projectile moves: from_original_location to new_location"
-					projectile_msg_append("%NA projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
+--					projectile_msg_append("%NA projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
+--										+ " -> " + coordinate_out(projectile1.location.cx, projectile1.location.cy + projectile1.states_alive_counter*project_m))
+					s := s + ("%N  A projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
 										+ " -> " + coordinate_out(projectile1.location.cx, projectile1.location.cy + projectile1.states_alive_counter*project_m))
-
 					-- check if Starfighter location is between old projectile location and new location
 					-- if it is then it will collide, as projectiles move first
 					if
@@ -273,7 +312,8 @@ feature -- model operations
 					then -- COLLISION OCCURS
 						grid[starfighter_location.cx][starfighter_location.cy] := "X" --marks collision
 						ingame := FALSE -- game over
-						cmd_msg_update ("%NA projectile moves and collides with the Starfighter: " +
+						gameover := True
+						cmd_msg_update ("A projectile moves and collides with the Starfighter: " +
 										coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m) + " -> " + location_out)
 										-- MAKE SURE TO PRINT THIS AS THE LAST THING AFTER ALL PROJECTILE MOVEMENTS*********, INCLUDING PROJECTILE MOVING
 					else
@@ -282,15 +322,24 @@ feature -- model operations
 					end
 
 
-				elseif
+				elseif -- when projectile moves outside of board
 					(projectile1.location.cy + (projectile1.states_alive_counter-1)*project_m) <= grid[1].count -- outside of grid now
 				then
 					-- remove previous location
 					grid[projectile1.location.cx][projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m] := "_"
-					projectile_msg_append("%NA projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
+--					projectile_msg_append("%NA projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
+--										+ " -> out of board")
+					s := s + ("%N  A projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
 										+ " -> out of board")
 				end
+
+
 			end
+			-- clear all msgs ahead
+			projectile_history_msg.remove_tail (projectile_history_msg.count - projcursor)
+			projcursor_add (1) -- move cursor
+			projectile_history_msg.force (s, projcursor) -- adds to history msg
+			projectile_msg := s
 		end
 
 	call_command(command: COMMANDS_MODEL)
@@ -298,7 +347,7 @@ feature -- model operations
 			state_increase -- increases state b/c valid command
 
 			-- delete all history from the tail and beyond based on where the cursor is *****************
-			history.remove_tail(history.upper - gcursor)
+			history.remove_tail(history.count - gcursor)
 			----------- move projectiles:
 			projectile_move(1) -- add 1 state and update grid
 			----
@@ -354,7 +403,7 @@ feature -- queries
 				Result.append("Welcome to Space Defender Version 1.")
 				welcome1 := false
 			else
-				Result.append ("state:")
+				Result.append ("  state:")
 				Result.append (state.out)
 				Result.append (".") -- temporary .
 				Result.append (errorState.out) -- error state counter
@@ -362,15 +411,19 @@ feature -- queries
 				Result.append (state_status)
 
 				if error_msg.count > 0 then -- there's an error
-					Result.append ("%N")
+					Result.append ("%N  ")
 					Result.append(error_msg)
 				else
 					-- Append command message
 					Result.append (projectile_msg)
-					Result.append (cmd_msg)
+					Result.append ("%N  " + cmd_msg)
 					Result.append ("%N")
 					-- Append Grid
 					Result.append (grid_out)
+					if gameover then
+						Result.append("%N  The game is over. Better luck next time!")
+						gameover := false
+					end
 				end
 			end
 

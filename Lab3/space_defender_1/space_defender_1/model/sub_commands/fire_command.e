@@ -48,12 +48,13 @@ feature -- Commands
 --				model.projectiles.force(projectile1, model.projectiles.count)
 					-- call_command will take care of remove, *** MAybE NOT? undo takecares
 
-				-- prints msg
-				model.cmd_msg_update ("%NThe Starfighter fires a projectile at: " + model.coordinate_out (projectile1.location.cx, projectile1.location.cy - 1))
 			else
 				-- dont print
 				-- do nothing
 			end
+			-- prints msg
+			model.cmd_msg_update ("The Starfighter fires a projectile at: " + model.coordinate_out (projectile1.location.cx, projectile1.location.cy - 1))
+
 --			model.projcursor_add(1) ******* REMOVED
 --			model.projectiles.force (projectile1, model.projcursor) -- adding to models array***
 			model.projectiles.force (projectile1, model.projectiles.count) -- using this instead
@@ -61,11 +62,19 @@ feature -- Commands
 
 	undo
 		do
+			if
+				(projectile1.location.cx > 0 AND projectile1.location.cx <= model.grid.count)
+				OR
+				(projectile1.location.cy > 0 AND projectile1.location.cy <= model.grid[1].count)
+				-- grid[1] will always work due to error check done before in ETF_FIRE and precond in ETF_PLAY
+			then
 			model.grid[projectile1.location.cx][projectile1.location.cy] := "_"
+			end
 --			if model.projectiles.count > 0 then
 --				model.projectiles.remove_tail(1) -- removes last projectile
 --			end
 			model.projectiles.remove_tail (1) -- HCECK IF THIS WORKS***************88
+			-- removes last added projectile, which will be this current projectil during run time
 --			model.projcursor_add(-1) *********** REMOVED
 
 			model.cmd_msg_update(previous_msg)

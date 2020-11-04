@@ -34,7 +34,7 @@ feature -- Commands
 	execute
 		do
 			previous_msg := model.cmd_msg
-			model.cmd_msg_update("%NThe Starfighter stays at: " + model.location_out)
+			model.cmd_msg_update("The Starfighter stays at: " + model.location_out)
 		end
 
 	undo

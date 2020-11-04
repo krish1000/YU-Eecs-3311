@@ -1,0 +1,26 @@
+play(5,10,12,3)
+fire
+fire
+--move(C,8) -- move(C,10) cause violation
+fire
+fire
+fire
+fire
+--abort
+undo
+undo
+undo
+undo
+undo
+undo
+
+--redo--
+--move(A,1)
+--fire
+--redo
+
+--redo
+--redo
+--redo
+--redo
+--redo
