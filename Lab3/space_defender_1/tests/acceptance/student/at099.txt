@@ -1,0 +1,14 @@
+play(10, 30, 8, 4)
+fire
+fire
+fire
+move(B, 10)
+pass
+pass
+move(B, 27)
+fire
+undo
+move(A, 22)
+move(A, 30)
+undo
+abort

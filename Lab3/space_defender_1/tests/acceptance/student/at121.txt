@@ -1,0 +1,15 @@
+play(3, 14, 22, 1)
+fire
+fire
+fire
+pass
+pass
+fire
+pass
+pass
+undo
+fire
+pass
+pass
+fire
+abort

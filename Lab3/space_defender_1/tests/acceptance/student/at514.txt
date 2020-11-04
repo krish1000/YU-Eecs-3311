@@ -1,0 +1,19 @@
+play(6, 23, 32, 2)
+pass
+pass
+move(D, 18)
+pass
+undo
+fire
+undo
+redo
+fire
+move(B, 22)
+pass
+undo
+fire
+move(D, 6)
+pass
+pass
+redo
+abort

@@ -1,0 +1,14 @@
+play(5,10,12,3)
+fire
+fire
+move(C,5) -- move(C,10) cause violation
+fire
+fire
+undo
+undo
+undo
+play(5,10,12,3)
+fire
+undo
+undo
+undo

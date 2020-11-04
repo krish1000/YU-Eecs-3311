@@ -1,0 +1,252 @@
+play(8, 30, 22, 5)
+fire
+move(C, 24)
+undo
+move(E, 22)
+pass
+move(B, 8)
+abort
+play(7, 28, 18, 2)
+fire
+fire
+fire
+move(E, 18)
+move(C, 5)
+pass
+fire
+undo
+move(B, 2)
+move(C, 20)
+fire
+pass
+abort
+play(4, 27, 9, 3)
+move(D, 2)
+undo
+pass
+pass
+move(A, 14)
+fire
+move(C, 12)
+move(A, 8)
+pass
+move(D, 20)
+fire
+move(D, 16)
+fire
+undo
+undo
+move(B, 7)
+fire
+move(C, 17)
+pass
+fire
+fire
+move(B, 24)
+pass
+fire
+move(D, 14)
+fire
+move(B, 20)
+pass
+undo
+fire
+pass
+move(B, 13)
+move(D, 15)
+undo
+move(D, 19)
+move(C, 9)
+move(A, 16)
+fire
+move(A, 25)
+move(C, 10)
+move(D, 14)
+move(C, 15)
+move(A, 18)
+pass
+fire
+abort
+play(7, 13, 38, 1)
+fire
+undo
+move(D, 12)
+fire
+move(F, 1)
+move(F, 4)
+fire
+pass
+fire
+undo
+pass
+move(D, 11)
+pass
+undo
+move(A, 13)
+move(G, 13)
+move(E, 1)
+pass
+fire
+fire
+move(A, 13)
+fire
+pass
+pass
+redo
+pass
+fire
+fire
+abort
+play(5, 24, 39, 2)
+fire
+pass
+fire
+move(A, 16)
+fire
+fire
+fire
+fire
+undo
+pass
+pass
+fire
+move(D, 22)
+pass
+undo
+pass
+move(E, 24)
+pass
+undo
+pass
+pass
+pass
+fire
+abort
+fire
+move(C, 22)
+fire
+fire
+pass
+fire
+undo
+pass
+pass
+fire
+pass
+undo
+move(E, 5)
+undo
+fire
+fire
+fire
+fire
+move(A, 2)
+fire
+fire
+pass
+pass
+pass
+move(C, 10)
+move(C, 16)
+move(C, 18)
+move(D, 1)
+fire
+move(A, 9)
+pass
+move(B, 17)
+fire
+move(D, 19)
+undo
+pass
+fire
+fire
+move(D, 14)
+undo
+move(C, 20)
+pass
+undo
+fire
+move(C, 13)
+redo
+move(C, 23)
+undo
+pass
+fire
+move(C, 4)
+move(B, 9)
+undo
+redo
+fire
+pass
+pass
+fire
+fire
+fire
+fire
+fire
+fire
+undo
+move(A, 20)
+fire
+pass
+pass
+pass
+undo
+undo
+pass
+fire
+pass
+undo
+pass
+fire
+fire
+move(D, 22)
+fire
+undo
+undo
+redo
+fire
+fire
+fire
+abort
+play(9, 10, 37, 3)
+pass
+move(F, 4)
+fire
+move(A, 3)
+pass
+move(D, 3)
+pass
+fire
+fire
+move(F, 10)
+fire
+fire
+fire
+fire
+move(H, 4)
+move(G, 5)
+pass
+fire
+undo
+fire
+undo
+pass
+move(B, 10)
+move(E, 6)
+fire
+pass
+fire
+move(A, 8)
+move(C, 2)
+move(C, 7)
+fire
+undo
+pass
+move(E, 6)
+fire
+fire
+abort
+fire
+fire
+abort

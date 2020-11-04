@@ -66,7 +66,7 @@ feature -- command
 							model.errorstate_increase("The Starfighter is already at that location.")
 						end
 					else
-						model.errorstate_increase("The location to move is out of Starfighter's movement range.")
+						model.errorstate_increase("The location to move to is out of the Starfighter's movement range.")
 					end
 				else
 					model.errorstate_increase("The location to move to is outside of the board.")

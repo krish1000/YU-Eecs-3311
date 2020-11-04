@@ -1,0 +1,68 @@
+play(6, 20, 7, 5)
+pass
+fire
+undo
+fire
+fire
+undo
+fire
+pass
+fire
+move(C, 19)
+move(C, 2)
+undo
+move(A, 6)
+move(A, 15)
+pass
+move(F, 1)
+move(C, 7)
+pass
+pass
+move(D, 3)
+pass
+fire
+pass
+move(F, 1)
+fire
+fire
+abort
+play(4, 8, 7, 5)
+fire
+move(D, 8)
+move(C, 6)
+move(C, 7)
+fire
+pass
+pass
+pass
+pass
+undo
+move(A, 6)
+fire
+pass
+pass
+pass
+pass
+pass
+move(B, 4)
+move(C, 5)
+move(C, 4)
+fire
+pass
+move(D, 6)
+fire
+pass
+undo
+move(A, 2)
+pass
+fire
+fire
+pass
+move(B, 8)
+pass
+undo
+move(C, 5)
+redo
+fire
+fire
+abort

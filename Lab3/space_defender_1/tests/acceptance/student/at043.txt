@@ -1,0 +1,252 @@
+play(4, 10, 30, 3)
+fire
+fire
+pass
+fire
+move(B, 10)
+fire
+undo
+move(C, 3)
+undo
+fire
+pass
+pass
+move(B, 3)
+undo
+pass
+fire
+undo
+move(C, 9)
+undo
+undo
+undo
+move(D, 4)
+move(C, 10)
+move(D, 8)
+pass
+move(B, 10)
+move(A, 10)
+move(C, 9)
+fire
+fire
+fire
+move(C, 5)
+pass
+fire
+pass
+move(B, 4)
+pass
+pass
+pass
+move(C, 8)
+abort
+play(4, 8, 24, 2)
+fire
+pass
+fire
+fire
+undo
+move(B, 8)
+pass
+fire
+move(C, 4)
+move(C, 8)
+fire
+fire
+undo
+redo
+fire
+fire
+undo
+undo
+move(C, 1)
+fire
+fire
+fire
+fire
+move(B, 2)
+fire
+move(D, 4)
+fire
+undo
+fire
+move(C, 3)
+pass
+fire
+fire
+move(C, 4)
+move(C, 3)
+pass
+fire
+fire
+move(B, 8)
+undo
+move(D, 5)
+undo
+move(C, 8)
+pass
+pass
+abort
+pass
+move(D, 2)
+move(C, 3)
+fire
+pass
+move(B, 5)
+pass
+pass
+pass
+move(D, 4)
+move(D, 3)
+move(D, 4)
+fire
+pass
+pass
+pass
+fire
+fire
+move(B, 6)
+undo
+pass
+fire
+fire
+pass
+fire
+pass
+pass
+move(C, 7)
+move(C, 4)
+undo
+move(A, 3)
+fire
+pass
+move(D, 5)
+fire
+move(B, 7)
+pass
+fire
+pass
+fire
+move(C, 7)
+move(B, 6)
+pass
+move(B, 3)
+fire
+abort
+undo
+fire
+redo
+undo
+move(B, 5)
+move(A, 5)
+fire
+undo
+undo
+move(A, 4)
+fire
+fire
+move(B, 5)
+pass
+fire
+undo
+redo
+move(A, 5)
+move(C, 1)
+undo
+redo
+fire
+move(C, 3)
+fire
+pass
+pass
+pass
+move(C, 5)
+undo
+move(B, 8)
+move(A, 8)
+move(C, 7)
+fire
+fire
+move(C, 5)
+abort
+play(10, 15, 7, 1)
+fire
+fire
+undo
+redo
+undo
+fire
+fire
+move(E, 15)
+move(A, 3)
+pass
+undo
+move(J, 11)
+fire
+fire
+pass
+fire
+fire
+pass
+move(D, 12)
+move(H, 14)
+fire
+pass
+fire
+fire
+fire
+pass
+fire
+move(H, 2)
+pass
+fire
+move(B, 9)
+undo
+move(B, 8)
+fire
+undo
+pass
+move(J, 6)
+move(F, 5)
+fire
+move(B, 5)
+pass
+pass
+fire
+move(D, 6)
+move(F, 5)
+move(E, 10)
+move(I, 7)
+abort
+pass
+move(A, 5)
+redo
+pass
+move(J, 8)
+move(J, 3)
+fire
+fire
+fire
+move(H, 13)
+move(J, 7)
+fire
+fire
+move(C, 13)
+fire
+fire
+pass
+pass
+undo
+pass
+move(G, 6)
+pass
+undo
+fire
+pass
+move(I, 11)
+fire
+move(J, 7)
+fire
+move(I, 7)
+pass
+abort

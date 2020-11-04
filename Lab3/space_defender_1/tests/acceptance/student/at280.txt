@@ -1,0 +1,12 @@
+play(7, 15, 36, 2)
+move(E, 5)
+move(C, 13)
+fire
+fire
+move(D, 14)
+move(D, 12)
+fire
+fire
+fire
+undo
+abort

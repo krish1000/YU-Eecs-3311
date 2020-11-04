@@ -37,9 +37,9 @@ feature -- Commands
 			previous_msg := model.cmd_msg -- stores previous command msg
 
 			if
-				(projectile1.location.cx > 0 AND projectile1.location.cx <= model.grid.count)
-				OR
-				(projectile1.location.cy > 0 AND projectile1.location.cy <= model.grid[1].count)
+--				(projectile1.location.cx > 0 AND projectile1.location.cx <= model.grid.count)
+--				OR
+				(projectile1.location.cy > 0 AND projectile1.location.cy <= model.grid[1].upper)
 				-- grid[1] will always work due to error check done before in ETF_FIRE and precond in ETF_PLAY
 			then
 				-- print the projectile
@@ -63,9 +63,9 @@ feature -- Commands
 	undo
 		do
 			if
-				(projectile1.location.cx > 0 AND projectile1.location.cx <= model.grid.count)
-				OR
-				(projectile1.location.cy > 0 AND projectile1.location.cy <= model.grid[1].count)
+--				(projectile1.location.cx > 0 AND projectile1.location.cx <= model.grid.count)
+--				OR
+				(projectile1.location.cy > 0 AND projectile1.location.cy <= model.grid[1].upper)
 				-- grid[1] will always work due to error check done before in ETF_FIRE and precond in ETF_PLAY
 			then
 			model.grid[projectile1.location.cx][projectile1.location.cy] := "_"

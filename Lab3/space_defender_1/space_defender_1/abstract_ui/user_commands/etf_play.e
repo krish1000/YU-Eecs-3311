@@ -24,10 +24,17 @@ feature -- command
 --			model.default_update
 --			r := row.
 --			c := column
-			if model.ingame then
-				model.errorState_increase("Please end the current game before starting a new one.") -- increase error state by 1
+			if not model.ingame then
+				if
+					player_mov <= (row - 1 + column -1)
+				then
+					model.play(row, column, player_mov, project_mov)
+				else
+					model.errorState_increase("Starfighter movement should not exceed row - 1 + column - 1 size of the board.")
+				end
 			else
-				model.play(row, column, player_mov, project_mov)
+				model.errorState_increase("Please end the current game before starting a new one.") -- increase error state by 1
+
 			end
 			etf_cmd_container.on_change.notify ([Current])
     	end

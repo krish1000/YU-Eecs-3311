@@ -93,7 +93,7 @@ feature -- commands
 			end
 
 			-- Check if starfighter moves forward or backward
-			if model.starfighter_location.cy > l_col then -- moves backward (left)
+			if model.starfighter_location.cy > l_col and not collided then -- moves backward (left)
 
 				from
 					l_index1 := model.starfighter_location.cy
@@ -101,33 +101,33 @@ feature -- commands
 					l_index1 < l_col or collided
 				loop
 					if
-						model.grid[model.starfighter_location.cx][l_index1].is_equal("*")
+						model.grid[l_row][l_index1].is_equal("*")
 					then
 						-- COLLISION occured, not ingame anymore
 						model.ingame_update(False)
 						collided := TRUE
-						model.grid[model.starfighter_location.cx][l_index1] := "X"
+						model.grid[l_row][l_index1] := "X"
 						model.cmd_msg_update ("The Starfighter moves and collides with a projectile: " +
-										model.location_out + " -> " + model.coordinate_out (model.starfighter_location.cx, l_index1))
+										model.location_out + " -> " + model.coordinate_out (l_row, l_index1))
 					end
 					l_index1 := l_index1 - 1 -- moves left
 				end
-			elseif model.starfighter_location.cy < l_col then -- moves forward (right)
+			elseif model.starfighter_location.cy < l_col and not collided then -- moves forward (right)
 				from
 					l_index1 := model.starfighter_location.cy
 				until
 					l_index1 > l_col or collided
 				loop
 					if
-						model.grid[model.starfighter_location.cx][l_index1].is_equal("*")
+						model.grid[l_row][l_index1].is_equal("*")
 					then
 						-- COLLISION occured, not ingame anymore
 --						model.ingame.set_item (False) -- doesnt work
 						model.ingame_update(False)
 						collided := TRUE
-						model.grid[model.starfighter_location.cx][l_index1] := "X"
+						model.grid[l_row][l_index1] := "X"
 						model.cmd_msg_update ("The Starfighter moves and collides with a projectile: " +
-										model.location_out + " -> " + model.coordinate_out (model.starfighter_location.cx, l_index1))
+										model.location_out + " -> " + model.coordinate_out (l_row, l_index1))
 					end
 					l_index1 := l_index1 + 1 -- moves right
 				end

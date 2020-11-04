@@ -1,37 +1,84 @@
---Undo/redo, multiple games with some undo/redo errors.
---studenNTNTNTNTNT
-undo
-redo
-play(5,10,5,3)
+play(4, 6, 34, 2)
+move(D, 1)
+pass
 fire
-move(A,1)
---
-move(E,9) -- error
-move(A,6) -- pass
-move(A,1) -- pass
-move(E,2) -- pass
-move(A,1) -- pass
-move(E,3) -- should be error
-move(E,3) -- should be error
-move(D,1) -- pass
-move(D,1) -- error
---
-move(B,1) -- pass
-undo -- pass
-
---
-move(C,2) -- pass
-pass -- pass
-undo -- pass 
-redo
-undo
-undo
-move(A,2)
-move(A,3)
-undo
-move(F,2)
-redo
+fire
+move(B, 3)
+fire
+fire
+pass
+pass
+fire
+fire
+fire
 abort
-play(8,8,9,3)
+move(D, 3)
+redo
+fire
+undo
+move(C, 4)
+undo
+fire
+move(C, 2)
+move(D, 1)
+fire
+undo
+move(C, 4)
+fire
+abort
+fire
+undo
+move(D, 6)
+fire
+move(C, 4)
+pass
+pass
+move(A, 1)
+move(A, 2)
+fire
+move(A, 4)
+abort
+play(4, 12, 17, 3)
+fire
+pass
+undo
+pass
+move(B, 12)
+move(C, 6)
+fire
+move(C, 6)
+fire
 undo
 redo
+fire
+fire
+move(C, 12)
+fire
+fire
+undo
+fire
+pass
+undo
+pass
+move(A, 1)
+fire
+undo
+undo
+redo
+move(D, 10)
+move(A, 8)
+fire
+pass
+undo
+undo
+pass
+undo
+fire
+undo
+move(D, 10)
+pass
+undo
+pass
+pass
+fire
+abort

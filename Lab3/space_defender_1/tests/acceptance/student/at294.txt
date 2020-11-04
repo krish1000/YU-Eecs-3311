@@ -1,0 +1,41 @@
+play(8, 24, 10, 2)
+pass
+fire
+fire
+fire
+undo
+move(C, 5)
+fire
+move(A, 24)
+fire
+fire
+pass
+move(A, 6)
+move(D, 13)
+undo
+move(H, 6)
+fire
+fire
+pass
+move(B, 2)
+fire
+move(C, 13)
+pass
+fire
+move(G, 24)
+undo
+redo
+fire
+undo
+move(G, 21)
+move(E, 8)
+fire
+fire
+fire
+fire
+pass
+fire
+fire
+move(B, 2)
+fire
+abort

@@ -1,0 +1,60 @@
+play(10, 28, 12, 5)
+fire
+fire
+undo
+redo
+pass
+pass
+pass
+move(I, 7)
+undo
+pass
+move(A, 23)
+move(G, 19)
+redo
+redo
+pass
+move(D, 2)
+fire
+fire
+fire
+fire
+move(G, 7)
+fire
+fire
+fire
+pass
+abort
+play(3, 5, 32, 5)
+undo
+undo
+fire
+undo
+undo
+undo
+move(C, 5)
+undo
+move(C, 2)
+fire
+undo
+redo
+fire
+fire
+fire
+pass
+pass
+fire
+pass
+pass
+fire
+pass
+move(B, 3)
+fire
+move(A, 3)
+move(A, 4)
+move(A, 5)
+fire
+undo
+redo
+undo
+abort

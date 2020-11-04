@@ -1,0 +1,20 @@
+play(8, 9, 30, 5)
+fire
+pass
+move(F, 8)
+pass
+pass
+fire
+pass
+fire
+pass
+pass
+move(H, 4)
+fire
+pass
+pass
+fire
+pass
+pass
+fire
+abort

@@ -1,0 +1,260 @@
+play(6, 8, 19, 4)
+move(B, 6)
+move(D, 5)
+undo
+undo
+pass
+fire
+move(E, 8)
+pass
+move(D, 6)
+fire
+fire
+fire
+move(C, 8)
+move(E, 3)
+move(C, 3)
+move(F, 5)
+move(E, 2)
+move(A, 2)
+move(A, 5)
+fire
+fire
+move(B, 8)
+fire
+move(F, 1)
+fire
+undo
+undo
+fire
+move(D, 7)
+move(B, 1)
+pass
+move(D, 6)
+fire
+move(F, 3)
+pass
+fire
+move(B, 4)
+move(F, 4)
+pass
+undo
+redo
+fire
+pass
+pass
+fire
+pass
+move(C, 3)
+pass
+fire
+move(C, 5)
+fire
+fire
+fire
+fire
+pass
+undo
+pass
+undo
+fire
+fire
+undo
+move(C, 1)
+move(D, 6)
+undo
+move(D, 3)
+fire
+fire
+fire
+move(C, 5)
+fire
+fire
+fire
+fire
+abort
+play(4, 10, 39, 5)
+pass
+pass
+pass
+pass
+undo
+redo
+move(B, 6)
+move(B, 7)
+move(D, 6)
+fire
+undo
+fire
+fire
+move(A, 10)
+move(D, 1)
+pass
+undo
+redo
+pass
+undo
+pass
+move(C, 4)
+undo
+abort
+play(8, 6, 33, 5)
+fire
+fire
+move(B, 2)
+pass
+fire
+fire
+undo
+fire
+pass
+move(E, 6)
+move(C, 3)
+pass
+fire
+pass
+move(G, 3)
+fire
+fire
+fire
+move(C, 1)
+fire
+pass
+move(B, 5)
+fire
+move(A, 3)
+fire
+fire
+undo
+move(H, 3)
+move(C, 2)
+move(G, 2)
+fire
+undo
+pass
+undo
+fire
+fire
+undo
+undo
+redo
+move(C, 6)
+undo
+undo
+move(E, 4)
+move(C, 4)
+fire
+move(H, 3)
+move(C, 4)
+fire
+undo
+pass
+move(B, 6)
+fire
+move(B, 1)
+undo
+move(G, 1)
+fire
+fire
+pass
+fire
+redo
+move(B, 5)
+move(D, 4)
+fire
+fire
+fire
+fire
+move(E, 2)
+fire
+redo
+fire
+move(C, 2)
+pass
+pass
+pass
+pass
+undo
+undo
+fire
+move(B, 1)
+move(F, 3)
+fire
+fire
+undo
+undo
+pass
+pass
+move(F, 2)
+undo
+move(H, 6)
+move(C, 6)
+pass
+move(D, 1)
+pass
+move(E, 6)
+abort
+play(3, 13, 26, 1)
+move(B, 3)
+undo
+pass
+fire
+move(B, 1)
+move(B, 5)
+move(C, 12)
+pass
+pass
+fire
+move(C, 5)
+pass
+fire
+fire
+pass
+pass
+undo
+redo
+move(A, 5)
+pass
+fire
+fire
+fire
+fire
+abort
+fire
+pass
+fire
+move(B, 1)
+fire
+move(C, 9)
+fire
+fire
+fire
+undo
+move(A, 1)
+undo
+redo
+pass
+pass
+pass
+move(A, 2)
+undo
+pass
+pass
+undo
+move(C, 6)
+fire
+fire
+pass
+pass
+pass
+move(C, 9)
+fire
+fire
+fire
+move(B, 4)
+pass
+fire
+fire
+move(B, 4)
+move(A, 12)
+abort

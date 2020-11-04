@@ -1,26 +1,41 @@
-play(5,10,12,3)
-fire
-fire
---move(C,8) -- move(C,10) cause violation
-fire
-fire
-fire
-fire
---abort
+play(8, 10, 11, 5)
+undo
+move(G, 3)
+pass
+pass
+undo
+redo
+pass
 undo
 undo
+fire
 undo
+move(B, 5)
+pass
+fire
+pass
+abort
+play(4, 17, 38, 5)
+move(C, 8)
+fire
+move(A, 12)
+fire
+redo
+move(C, 5)
 undo
+move(D, 1)
+move(C, 17)
+pass
+pass
+pass
+fire
+move(B, 12)
+move(C, 14)
+fire
+move(D, 6)
 undo
+move(B, 11)
 undo
-
---redo--
---move(A,1)
---fire
---redo
-
---redo
---redo
---redo
---redo
---redo
+pass
+fire
+abort

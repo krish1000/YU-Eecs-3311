@@ -1,0 +1,22 @@
+play(5, 16, 14, 4)
+undo
+fire
+fire
+fire
+abort
+play(9, 13, 36, 1)
+move(G, 9)
+abort
+fire
+pass
+fire
+undo
+move(I, 12)
+fire
+undo
+fire
+fire
+fire
+undo
+fire
+abort

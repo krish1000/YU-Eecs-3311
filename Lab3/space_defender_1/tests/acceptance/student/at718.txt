@@ -1,0 +1,13 @@
+play(4, 19, 28, 4)
+fire
+pass
+pass
+pass
+move(A, 1)
+pass
+fire
+fire
+pass
+move(A, 5)
+fire
+abort

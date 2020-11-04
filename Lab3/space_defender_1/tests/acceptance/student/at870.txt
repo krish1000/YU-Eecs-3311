@@ -1,0 +1,19 @@
+play(4, 29, 39, 2)
+fire
+pass
+pass
+fire
+pass
+move(D, 21)
+pass
+fire
+move(A, 11)
+pass
+fire
+fire
+fire
+fire
+move(B, 10)
+fire
+pass
+abort

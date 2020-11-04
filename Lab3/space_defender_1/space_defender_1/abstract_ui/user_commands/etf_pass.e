@@ -13,7 +13,12 @@ create
 feature -- command
 	pass
     	do
-    		model.call_command (create {PASS_COMMAND}.make)
+    		if model.ingame then
+				model.call_command (create {PASS_COMMAND}.make)
+			else
+				model.errorstate_increase("Not in game.")
+			end
+
 
 			-- perform some update on the model state
 --			model.default_update

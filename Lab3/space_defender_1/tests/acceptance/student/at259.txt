@@ -1,0 +1,10 @@
+play(9, 14, 33, 4)
+move(H, 14)
+undo
+fire
+fire
+fire
+fire
+redo
+fire
+abort

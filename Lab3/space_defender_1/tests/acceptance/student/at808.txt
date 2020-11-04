@@ -1,0 +1,13 @@
+play(8, 5, 23, 2)
+move(H, 4)
+undo
+pass
+pass
+fire
+move(F, 3)
+fire
+fire
+fire
+undo
+undo
+abort

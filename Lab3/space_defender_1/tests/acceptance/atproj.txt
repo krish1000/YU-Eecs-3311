@@ -1,0 +1,6 @@
+undo
+redo
+play(5,10,13,2)
+move(A,10)
+fire
+fire

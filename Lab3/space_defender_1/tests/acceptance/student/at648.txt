@@ -1,0 +1,13 @@
+play(8, 15, 30, 1)
+fire
+undo
+fire
+fire
+undo
+redo
+pass
+fire
+undo
+fire
+pass
+abort

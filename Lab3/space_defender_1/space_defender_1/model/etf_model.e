@@ -218,6 +218,7 @@ feature -- model operations
 				state_increase -- increase state, reset errorState
 
 				--- RESETS ---
+				create grid.make_empty -- clear grid
 				create history.make_empty -- reset history array
 				create projectiles.make_empty
 				create projectile_history_msg.make_empty
@@ -258,16 +259,12 @@ feature -- model operations
 			if ingame then
 				ingame := False -- not in game anymore
 --				cmd_msg := "Game has been exited."
+
+				state_increase
 				error_msg := "Game has been exited."
 				-- using error_msg, temp for now so grid wont appear
 
 				-- TESTING:
-				across
-					projectile_history_msg is s
-				loop
-					error_msg := error_msg + "%N..." + s
-				end
-
 
 			else
 				errorState_increase("Not in game.")
@@ -295,12 +292,6 @@ feature -- model operations
 					-- remove previous location
 					grid[projectile1.location.cx][projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m] := "_"
 
-					-- print projectile msgs, append to projectile_msg
-					-- "A projectile moves: from_original_location to new_location"
---					projectile_msg_append("%NA projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
---										+ " -> " + coordinate_out(projectile1.location.cx, projectile1.location.cy + projectile1.states_alive_counter*project_m))
-					s := s + ("%N  A projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
-										+ " -> " + coordinate_out(projectile1.location.cx, projectile1.location.cy + projectile1.states_alive_counter*project_m))
 					-- check if Starfighter location is between old projectile location and new location
 					-- if it is then it will collide, as projectiles move first
 					if
@@ -313,11 +304,16 @@ feature -- model operations
 						grid[starfighter_location.cx][starfighter_location.cy] := "X" --marks collision
 						ingame := FALSE -- game over
 						gameover := True
-						cmd_msg_update ("A projectile moves and collides with the Starfighter: " +
+						cmd_msg_update("") -- clear cmd msg
+--						cmd_msg_update ("A projectile moves and collides with the Starfighter: " +
+--										coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m) + " -> " + location_out)
+						s := s + ("%N  A projectile moves and collides with the Starfighter: " +
 										coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m) + " -> " + location_out)
-										-- MAKE SURE TO PRINT THIS AS THE LAST THING AFTER ALL PROJECTILE MOVEMENTS*********, INCLUDING PROJECTILE MOVING
 					else
 						-- print the projectile
+						s := s + ("%N  A projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
+															+ " -> " + coordinate_out(projectile1.location.cx, projectile1.location.cy + projectile1.states_alive_counter*project_m))
+
 						grid[projectile1.location.cx][projectile1.location.cy + projectile1.states_alive_counter*project_m] := "*"
 					end
 
@@ -330,7 +326,7 @@ feature -- model operations
 --					projectile_msg_append("%NA projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
 --										+ " -> out of board")
 					s := s + ("%N  A projectile moves: " + coordinate_out(projectile1.location.cx, projectile1.location.cy + (projectile1.states_alive_counter - 1)*project_m)
-										+ " -> out of board")
+										+ " -> out of the board")
 				end
 
 
@@ -400,7 +396,7 @@ feature -- queries
 		do
 			create Result.make_empty
 			if welcome1 then -- Inital when .exe starts
-				Result.append("Welcome to Space Defender Version 1.")
+				Result.append("  Welcome to Space Defender Version 1.")
 				welcome1 := false
 			else
 				Result.append ("  state:")
@@ -416,7 +412,9 @@ feature -- queries
 				else
 					-- Append command message
 					Result.append (projectile_msg)
-					Result.append ("%N  " + cmd_msg)
+					if cmd_msg.count > 0 then
+						Result.append ("%N  " + cmd_msg)
+					end
 					Result.append ("%N")
 					-- Append Grid
 					Result.append (grid_out)

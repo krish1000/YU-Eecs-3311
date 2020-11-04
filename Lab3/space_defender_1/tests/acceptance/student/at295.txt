@@ -1,0 +1,273 @@
+play(8, 7, 26, 2)
+fire
+move(H, 4)
+pass
+move(E, 7)
+undo
+move(G, 4)
+pass
+fire
+move(D, 7)
+pass
+undo
+move(A, 4)
+pass
+pass
+undo
+pass
+move(D, 3)
+pass
+undo
+move(H, 5)
+pass
+redo
+fire
+undo
+pass
+fire
+fire
+abort
+play(8, 5, 26, 2)
+fire
+move(A, 5)
+fire
+fire
+fire
+fire
+pass
+pass
+fire
+move(F, 1)
+move(D, 5)
+fire
+move(E, 4)
+move(D, 5)
+pass
+pass
+move(E, 4)
+fire
+undo
+fire
+fire
+move(H, 2)
+undo
+pass
+fire
+fire
+pass
+undo
+fire
+pass
+move(A, 4)
+fire
+move(B, 4)
+undo
+move(H, 3)
+undo
+undo
+undo
+fire
+fire
+fire
+fire
+move(B, 5)
+fire
+pass
+undo
+undo
+pass
+move(E, 2)
+move(E, 3)
+pass
+move(H, 2)
+move(C, 1)
+undo
+move(G, 5)
+pass
+abort
+play(7, 30, 13, 1)
+fire
+move(D, 21)
+move(A, 8)
+fire
+fire
+fire
+fire
+undo
+pass
+move(C, 7)
+undo
+move(F, 27)
+fire
+fire
+undo
+move(E, 19)
+pass
+fire
+undo
+pass
+move(E, 20)
+pass
+undo
+redo
+fire
+fire
+move(E, 14)
+fire
+pass
+pass
+fire
+fire
+undo
+fire
+undo
+fire
+fire
+move(E, 29)
+abort
+play(6, 6, 37, 3)
+fire
+move(B, 1)
+undo
+fire
+move(C, 6)
+fire
+undo
+move(B, 2)
+undo
+pass
+fire
+move(F, 6)
+fire
+fire
+fire
+undo
+pass
+undo
+pass
+pass
+fire
+fire
+fire
+fire
+fire
+fire
+move(D, 6)
+fire
+pass
+move(A, 5)
+fire
+pass
+fire
+move(E, 4)
+move(C, 1)
+pass
+fire
+undo
+pass
+undo
+undo
+pass
+pass
+fire
+pass
+undo
+move(B, 1)
+abort
+play(10, 28, 21, 1)
+move(A, 17)
+fire
+move(H, 16)
+move(J, 24)
+move(F, 7)
+pass
+fire
+fire
+fire
+fire
+move(E, 3)
+move(A, 10)
+fire
+fire
+pass
+pass
+fire
+fire
+fire
+abort
+fire
+abort
+play(4, 11, 17, 4)
+fire
+fire
+undo
+fire
+move(B, 9)
+fire
+fire
+fire
+undo
+move(D, 6)
+move(A, 3)
+undo
+fire
+move(A, 4)
+move(B, 4)
+fire
+pass
+move(A, 4)
+fire
+pass
+undo
+move(A, 10)
+fire
+fire
+move(C, 2)
+fire
+fire
+pass
+pass
+fire
+move(C, 11)
+move(B, 5)
+move(D, 5)
+fire
+fire
+fire
+pass
+fire
+move(C, 4)
+undo
+fire
+move(D, 5)
+move(A, 9)
+fire
+fire
+pass
+move(C, 2)
+fire
+pass
+move(A, 8)
+pass
+fire
+fire
+move(B, 8)
+fire
+pass
+pass
+fire
+fire
+fire
+fire
+pass
+fire
+undo
+pass
+undo
+fire
+pass
+undo
+fire
+pass
+fire
+abort

@@ -1,14 +1,50 @@
-play(5,10,12,3)
+play(8, 15, 26, 1)
+fire
+pass
+move(D, 12)
+undo
+fire
+move(A, 3)
+move(B, 11)
+fire
+pass
+move(B, 9)
+move(E, 11)
+fire
+undo
+pass
+undo
 fire
 fire
-move(C,5) -- move(C,10) cause violation
+abort
+undo
+move(A, 1)
+abort
 fire
 fire
-undo
-undo
-undo
-play(5,10,12,3)
+pass
+move(D, 12)
 fire
+fire
+fire
+pass
+fire
+move(B, 14)
+fire
+move(F, 7)
+move(G, 10)
+fire
+move(F, 1)
+fire
+move(G, 8)
+pass
 undo
-undo
-undo
+pass
+fire
+fire
+fire
+move(E, 15)
+move(F, 4)
+pass
+fire
+abort

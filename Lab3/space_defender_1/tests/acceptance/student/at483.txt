@@ -1,0 +1,264 @@
+play(7, 8, 27, 4)
+move(A, 2)
+pass
+move(B, 7)
+undo
+undo
+fire
+move(A, 1)
+move(B, 5)
+pass
+move(B, 4)
+fire
+fire
+fire
+fire
+pass
+pass
+fire
+fire
+undo
+fire
+pass
+pass
+move(F, 6)
+move(D, 7)
+fire
+move(E, 7)
+move(D, 5)
+pass
+undo
+move(G, 5)
+move(B, 4)
+move(E, 7)
+undo
+fire
+fire
+undo
+redo
+fire
+fire
+move(E, 3)
+fire
+fire
+redo
+move(G, 7)
+undo
+fire
+move(B, 3)
+fire
+fire
+fire
+pass
+fire
+move(C, 8)
+move(B, 2)
+undo
+fire
+move(A, 6)
+fire
+pass
+move(E, 2)
+fire
+pass
+fire
+move(G, 3)
+move(A, 5)
+pass
+undo
+undo
+move(B, 2)
+pass
+undo
+pass
+fire
+undo
+redo
+fire
+undo
+redo
+pass
+pass
+move(B, 3)
+undo
+undo
+pass
+pass
+fire
+undo
+move(B, 8)
+move(F, 6)
+fire
+pass
+undo
+pass
+move(C, 3)
+fire
+abort
+play(7, 6, 22, 1)
+pass
+fire
+pass
+pass
+move(B, 3)
+pass
+pass
+fire
+fire
+undo
+fire
+move(E, 3)
+fire
+move(E, 3)
+fire
+pass
+fire
+undo
+fire
+pass
+fire
+fire
+move(B, 6)
+move(C, 1)
+fire
+fire
+move(A, 2)
+fire
+undo
+fire
+fire
+redo
+undo
+move(A, 2)
+move(C, 2)
+move(A, 6)
+pass
+move(E, 3)
+fire
+redo
+move(F, 5)
+move(D, 1)
+fire
+fire
+abort
+play(5, 5, 27, 5)
+fire
+pass
+fire
+fire
+move(B, 4)
+fire
+move(D, 3)
+move(B, 4)
+fire
+pass
+fire
+pass
+move(A, 3)
+undo
+fire
+redo
+undo
+undo
+move(A, 1)
+pass
+fire
+pass
+fire
+move(E, 4)
+pass
+fire
+fire
+pass
+undo
+move(C, 2)
+move(D, 2)
+pass
+pass
+move(B, 2)
+move(C, 1)
+move(A, 3)
+move(B, 5)
+move(A, 4)
+fire
+fire
+pass
+pass
+abort
+undo
+undo
+fire
+pass
+move(B, 1)
+move(E, 2)
+fire
+fire
+fire
+move(D, 3)
+pass
+pass
+move(A, 3)
+move(C, 5)
+pass
+fire
+fire
+move(D, 1)
+move(A, 2)
+fire
+fire
+fire
+move(B, 4)
+fire
+fire
+move(D, 3)
+redo
+pass
+move(A, 1)
+redo
+fire
+abort
+undo
+move(B, 5)
+undo
+fire
+pass
+fire
+move(D, 1)
+redo
+undo
+move(A, 2)
+pass
+fire
+fire
+fire
+pass
+fire
+undo
+fire
+move(E, 2)
+undo
+move(E, 1)
+move(C, 1)
+move(E, 3)
+fire
+fire
+fire
+fire
+move(A, 1)
+pass
+undo
+fire
+fire
+undo
+pass
+fire
+pass
+pass
+pass
+fire
+move(A, 2)
+pass
+move(E, 2)
+move(E, 3)
+undo
+abort

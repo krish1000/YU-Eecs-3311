@@ -1,11 +1,169 @@
-play(5,20,12,3)
-fire
-fire
--- move(C,10) cause violation
-fire
+play(7, 27, 8, 4)
+move(B, 16)
 fire
 undo
+move(G, 25)
+fire
+fire
+fire
+move(E, 1)
+pass
+pass
+move(D, 24)
+fire
+fire
+fire
+fire
+move(B, 22)
+fire
+fire
+fire
+move(C, 10)
+fire
+fire
+pass
 undo
+fire
 undo
+pass
+pass
+pass
+move(E, 2)
+pass
+move(F, 12)
+fire
 undo
+fire
+pass
+pass
+move(D, 22)
 undo
+pass
+move(A, 14)
+fire
+fire
+fire
+fire
+abort
+undo
+move(B, 3)
+pass
+move(C, 23)
+fire
+pass
+move(D, 1)
+undo
+fire
+fire
+fire
+pass
+fire
+pass
+move(C, 2)
+fire
+fire
+undo
+move(D, 5)
+fire
+fire
+move(A, 23)
+fire
+fire
+fire
+move(A, 10)
+undo
+fire
+move(F, 18)
+move(G, 1)
+undo
+pass
+pass
+pass
+fire
+fire
+pass
+fire
+fire
+fire
+undo
+pass
+pass
+pass
+move(G, 19)
+fire
+move(E, 25)
+pass
+fire
+fire
+pass
+fire
+move(C, 27)
+abort
+play(3, 27, 30, 1)
+pass
+fire
+pass
+fire
+fire
+fire
+undo
+pass
+move(A, 3)
+pass
+fire
+move(A, 9)
+undo
+fire
+fire
+move(C, 15)
+pass
+redo
+fire
+fire
+pass
+pass
+fire
+undo
+fire
+fire
+move(B, 25)
+undo
+fire
+fire
+undo
+redo
+pass
+move(A, 27)
+fire
+pass
+fire
+move(A, 23)
+pass
+fire
+undo
+fire
+pass
+redo
+pass
+abort
+play(9, 29, 19, 5)
+pass
+pass
+fire
+fire
+redo
+pass
+pass
+fire
+move(D, 19)
+pass
+pass
+move(H, 8)
+move(F, 25)
+pass
+fire
+fire
+fire
+pass
+fire
+abort

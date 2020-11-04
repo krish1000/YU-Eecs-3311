@@ -1,0 +1,11 @@
+play(7, 24, 29, 3)
+pass
+undo
+pass
+pass
+pass
+fire
+move(E, 3)
+fire
+pass
+abort
