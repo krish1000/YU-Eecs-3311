@@ -101,7 +101,7 @@ feature -- model state operations
 			errorState := errorState + 1
 		end
 
-feature -- I ADDED queries
+feature -- Queries
 	state_status: STRING -- returns "error" if error in state, else "ok"
 		do
 			Result := "ok"
@@ -161,7 +161,7 @@ feature -- I ADDED queries
 		do
 			Result := "[" + letter[row] + "," + col.out + "]"
 		end
-feature -- model operations
+feature -- Update operations
 	default_update
 			-- Perform update to the model state.
 		do
@@ -213,6 +213,7 @@ feature -- model operations
 			starfighter_location := [row, column]
 		end
 
+feature -- Model operations
 	play(row: INTEGER_32 ; column: INTEGER_32 ; player_mov: INTEGER_32 ; project_mov: INTEGER_32)
 		do
 				state_increase -- increase state, reset errorState
@@ -369,20 +370,6 @@ feature -- model operations
 	--			history.force (command) -- was using linkedlist before
 				command.execute -- executes the given command
 			end
-
-
-		end
-
-
-	fire -- fire's projectile
-		do
-			if ingame then
-				state_increase
-				-- save state num, along with row
-				--
-			else
-				errorstate_increase ("Not in game.")
-			end
 		end
 
 	reset
@@ -391,7 +378,7 @@ feature -- model operations
 			make
 		end
 
-feature -- queries
+feature -- Out
 	out : STRING
 		do
 			create Result.make_empty

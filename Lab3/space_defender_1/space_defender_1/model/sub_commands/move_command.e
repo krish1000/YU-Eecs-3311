@@ -27,7 +27,7 @@ feature {NONE} -- Initialization
 			create previous_msg.make_empty
 		end
 
-feature {NONE} -- private attributes
+feature -- attributes
 	model: ETF_MODEL
 	l_row: INTEGER
 	l_col: INTEGER
@@ -36,6 +36,10 @@ feature {NONE} -- private attributes
 feature -- commands
 
 	execute
+		require else
+			new_location_within_grid:
+				l_row <= model.grid.upper AND l_col <= model.grid[1].upper
+
 		local
 			l_index1 : INTEGER -- cursor
 			collided : BOOLEAN

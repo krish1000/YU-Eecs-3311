@@ -7,8 +7,6 @@ note
 deferred class
 	COMMANDS_MODEL
 
---create
---	make
 --feature {NONE} -- Initialization
 --	make
 --		local
@@ -26,7 +24,7 @@ feature -- Commands
 --	model : ETF_MODEL -- declare model, so child classes can use it, (inheritance)
 	-- set attribute model to the same original instance model taken from mda.m (using once, expanded)
 
-	execute is deferred end -- don't need 'is'?
-	undo is deferred end
+	execute  deferred end -- don't need 'is'?
+	undo  deferred end
 
 end

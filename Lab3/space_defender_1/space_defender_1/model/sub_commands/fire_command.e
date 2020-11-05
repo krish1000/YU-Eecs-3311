@@ -33,6 +33,11 @@ feature -- Attributes
 feature -- Commands
 
 	execute
+		require else
+			starfighter_location_within_grid:
+				model.starfighter_location.cx <= model.grid.upper
+				AND
+				model.starfighter_location.cy <= model.grid[1].upper
 		do
 			previous_msg := model.cmd_msg -- stores previous command msg
 
