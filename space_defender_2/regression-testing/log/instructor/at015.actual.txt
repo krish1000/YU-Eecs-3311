@@ -1,0 +1,19 @@
+  System State: default model state (0)
+->play(10,30,40,40,40,101,101)
+  System State: default model state (1)
+->toggle_debug_mode
+  System State: default model state (2)
+->setup_next(5)
+  System State: default model state (3)
+->pass
+  System State: default model state (4)
+->pass
+  System State: default model state (5)
+->pass
+  System State: default model state (6)
+->pass
+  System State: default model state (7)
+->pass
+  System State: default model state (8)
+->fire
+  System State: default model state (9)
