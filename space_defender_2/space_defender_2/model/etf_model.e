@@ -20,11 +20,23 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
+			create projectiles.make
+			create enemies.make
 			create starfighter.make
 
 			toggle_debug := False
 			create toggle_msg.make_empty
+			create toggle_enemy_msg.make_empty
+
+			create toggle_proj_msg.make_empty
+			create toggle_friend_proj_msg.make_empty
+			create toggle_enemy_proj_msg.make_empty
+
 			create toggle_star_action_msg.make_empty
+			create toggle_enemy_action_msg.make_empty
+			create toggle_natural_enemy_action_msg.make_empty
+
+
 		-- Application transition table:
 			create app.make(5,5)
 			create app_back.make(5,5)
@@ -41,6 +53,7 @@ feature {NONE} -- Initialization
 			transition_next_table
 			transition_back_table
 
+			create command_msg.make_empty
 			create s.make_empty
 			state := 0
 			errorState := 0
@@ -135,14 +148,15 @@ feature -- model attributes
 	toggle_debug : BOOLEAN
 	toggle_msg : STRING
 
---	toggle_enemy_msg : STRING
---	toggle_proj_msg : STRING
---	toggle_friend_proj_msg : STRING
---	toggle_enemy_proj_msg : STRING
+	toggle_enemy_msg : STRING
+	toggle_proj_msg : STRING
+	toggle_friend_proj_msg : STRING
+	toggle_enemy_proj_msg : STRING
 	toggle_star_action_msg : STRING
---	toggle_enemy_action_msg : STRING
---	toggle_natural_enemy_action_msg : STRING
+	toggle_enemy_action_msg : STRING
+	toggle_natural_enemy_action_msg : STRING
 	-------- STRINGS -----------
+	command_msg : STRING
 	s : STRING
 	state : INTEGER
 	welcome : BOOLEAN
@@ -170,6 +184,13 @@ feature -- model attributes
 	states_index : INTEGER
 	app : APPLICATION
 	app_back : APPLICATION
+
+	------ PROJECTILES ---------
+--	projectiles : ARRAY[PROJECTILE]
+	projectiles : LINKED_LIST[PROJECTILE]
+
+	----- ENEMIES --------
+	enemies : LINKED_LIST[ENEMY]
 
 feature -- Starfighter Attributes
 --	attributes : ATTRIBUTE_VALUES
@@ -232,15 +253,31 @@ feature -- model queries
 		do
 			create Result.make_empty
 			Result.append("%N  Enemy:")
+				Result.append (toggle_out_check(toggle_enemy_msg))
+
 			Result.append("%N  Projectile:")
+				Result.append (toggle_out_check(toggle_proj_msg))
 			Result.append("%N  Friendly Projectile Action:")
+				Result.append (toggle_out_check(toggle_friend_proj_msg))
 			Result.append("%N  Enemy Projectile Action:")
+				Result.append (toggle_out_check (toggle_enemy_proj_msg))
+
 			Result.append("%N  Starfighter Action:")
-			if toggle_star_action_msg.count > 0 then
-				Result.append("%N    " + toggle_star_action_msg)
-			end
+				if toggle_star_action_msg.count > 0 then
+					Result.append("%N    " + toggle_star_action_msg)
+				end
 			Result.append("%N  Enemy Action:")
+				Result.append (toggle_out_check (toggle_enemy_action_msg))
 			Result.append("%N  Natural Enemy Spawn:")
+				Result.append (toggle_out_check(toggle_natural_enemy_action_msg))
+		end
+
+	toggle_out_check(s1 : STRING) : STRING
+		do
+			create Result.make_empty
+			if s1.count > 0 then
+				Result.append (s1)
+			end
 		end
 
 	grid_out(l_grid : ARRAY[ARRAY[STRING]]): STRING -- returns grid in string format
@@ -286,6 +323,18 @@ feature -- model queries
 		end
 
 feature -- game commands
+	add_projectile(p : PROJECTILE)
+		do
+--			projectiles.force (p, 1) -- ARRAY
+--			projectiles.put (p, 1)
+			projectiles.extend (p)
+		end
+
+	add_enemy(e : ENEMY)
+		do
+			enemies.extend (e)
+		end
+
 	fog_of_war : ARRAY[ARRAY[STRING]] -- bad time complexity, but ease for now
 		local
 			i : INTEGER
@@ -311,6 +360,142 @@ feature -- game commands
 
 		end
 
+	game_update
+		do
+			state := state + 1
+			errorstate := 0
+			test_msg.append ("%N PROJECTILE COUNT " + projectiles.count.out)
+			-- Move projectiles
+			across
+				projectiles is proj
+			loop
+				test_msg.append ("%N PROJECTILE COUNT " + proj.outside_board.out)
+				if not proj.outside_board then -- put projectiles on grid -- NEED TO ALSO REMOVE PRJOECTILES IF IT LEFT THE BOARD IN PREVIOUS STATE
+					-------------------- PROJECTILE
+
+					grid[proj.location.row][proj.location.col] := "_" -- replace previous position
+					proj.move -- move projectile
+					if not proj.outside_board then
+						toggle_proj_msg.append ("%N    " + proj.stats_out)
+					end
+
+					-------------------- FRIENDLY PROJ
+					if proj.friendly then
+--						grid[proj.location.row][proj.location.col] := "_"
+--						proj.move
+						toggle_friend_proj_msg.append ("%N    " + proj.status)
+						if not proj.outside_board then
+							grid[proj.location.row][proj.location.col] := "*"
+							-- NEED TO DO COLLISON CHECKING
+						else -- just went outside of board
+
+						end
+					-------------------- ENEMY PROJ
+					else
+--						grid[proj.location.row][proj.location.col] := "_"
+--						proj.move
+						test_msg.append ("%N NOT FRIENDLY REEE") -----------------------------
+--						if not proj.outside_board then
+							toggle_enemy_proj_msg.append ("%N    " + proj.status)
+--						end
+
+						if not proj.outside_board then
+							grid[proj.location.row][proj.location.col] := "<"
+							-- NEED TO DO COLLISON CHECKING
+						else --- just went outside of board
+
+						end
+						-- NEED TO DO COLLISION CHECKING
+						-- with enemy, can enemy projs collide with one antoher?
+						-- also check wit hspawn
+						-- with fridnly projectile
+						-- with starfighter
+					end
+				end
+			end
+			execute_enemies
+			enemy_spawn
+		end
+
+	execute_enemies
+		do
+			across
+				enemies is enemy
+			loop
+--				grid[proj.location.row][proj.location.col] := "_"
+				enemy.execute
+				if not enemy.outside_board then
+
+					toggle_enemy_msg.append (enemy.stats_out)
+				end
+			end
+		end
+
+	enemy_spawn
+		local
+--			rng : RANDOM_GENERATOR
+			random : RANDOM_GENERATOR_ACCESS
+			l_i : INTEGER
+			l_j : INTEGER
+			enemy : ENEMY
+		do
+			if state > 0 then
+				l_i := random.rchoose (1, l_row) -- determines which row enemy spawns in
+				l_j := random.rchoose (1, 100) -- determines which enemy type spawns
+				test_msg.append ("%N RANDOM TYPE: " + l_j.out + " " + l_col.out) ------------------------------
+	--			play(row, column, g_threshold, f_threshold, c_threshold, i_threshold, p_threshold)
+				if l_j < lg_threshold then -- spawn grunt
+					enemy := create {GRUNT}.make
+					add_enemy (enemy)
+				elseif  l_j < lf_threshold then -- spawn fighter
+
+				elseif  l_j < lc_threshold then -- spawn carrier
+
+				elseif  l_j < li_threshold then -- spawn interceptor
+
+				elseif  l_j < lp_threshold then -- spawn pylon
+
+				-- what about < 101 i think im missing something********nvm it just doesnt spawn anything
+				end
+
+				if attached enemy as e then
+					e.set_location (l_i, l_col)
+					grid[l_i][l_col] := e.symbol
+
+					-- MSG --
+					toggle_natural_enemy_action_msg.append ("%N    A " + e.name + "(id:" + e.id.out + ") spawns at location " + e.location_out + ".")
+					toggle_enemy_msg.append(e.stats_out)
+				end
+
+--				if enemies.count > 0 then
+--					enemy := enemies[enemies.count] -- last enemy is the one we just generated
+--					enemy.set_location (l_i, l_col)
+--					-- ALSO NEED TO CHECK FOR COLLISION ON SPAWNING LOCATION******** BUT IGNORING FOR NOW************
+--					grid[l_i][l_col] := enemy.symbol
+--				end
+
+			end
+
+
+--------------------------------------------------------
+--			-- generates a number from 50 to 60 inclusive
+--			num := random.rchoose(50,60)
+--			test_msg.append ("  First number generated (e.g. from [50,60]) is always the minimun of the interval:" + num.out + "%N")
+
+--			-- generates a number from 1 to 101 inclusive
+--			num := random.rchoose(1,101)
+--			test_msg.append ("  Second number generated (e.g. from [1,101]) is always still the minimun of the interval:" + num.out + "%N")
+
+--			-- generates a number from 50 to 60 inclusive
+--			num := random.rchoose(50,60)
+--			test_msg.append ("  Starting from the third number, a random number is generated from the interval:" + num.out + "%N")
+
+--			-- generates a number from 40 to 60 inclusive
+--			num := random.rchoose(40,60)
+--			test_msg.append ("  A random number is generated from the interval:" + num.out)
+
+		end
+
 feature -- model operations
 	default_update
 			-- Perform update to the model state.
@@ -332,7 +517,14 @@ feature -- model operations
 			in_setup := TRUE -- in set up mode now; when finished setup, set to false & set in_game to TRUE
 			states_index := 1 -- into wep setup
 			------- RESET -------
-			 grid.make_empty -- DONT USE CREATE, it will make a new object and screw up everything
+			grid.make_empty -- DONT USE CREATE, it will make a new object and screw up everything
+			lg_threshold := g_threshold
+			lf_threshold := f_threshold
+			lc_threshold := c_threshold
+			li_threshold := i_threshold
+			lp_threshold := p_threshold
+			l_row := row
+			l_col := column
 			-----------------
 			across
 					1 |..| row is l_r
@@ -483,7 +675,7 @@ feature -- queries
 			end
 
 			------ TESTING PURPOSES: ----------
-			Result.append ("%N  TESTMSG: " + test_msg)
+--			Result.append ("%N  TESTMSG: "+ command_msg +  " " + test_msg)
 			-----------------------------------
 
 			if welcome then -- welcome msg
@@ -494,8 +686,18 @@ feature -- queries
 
 			--- RESET ---
 			error_msg := ""
+			command_msg := ""
+
 			test_msg := ""
+
+
 			toggle_msg := ""
+			toggle_friend_proj_msg := ""
+			toggle_proj_msg := ""
+			toggle_natural_enemy_action_msg := ""
+			toggle_enemy_proj_msg := ""
+			toggle_enemy_action_msg := ""
+			toggle_enemy_msg := ""
 		end
 
 end

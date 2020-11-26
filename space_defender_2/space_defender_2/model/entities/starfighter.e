@@ -20,6 +20,9 @@ feature {NONE} -- Initialization
 
 		do
 --			create starfighter_location
+			name := "Starfighter"
+			id := 0
+			symbol := "S"
 			create location
 			create attributes.make
 			create current_attributes.make
@@ -28,7 +31,7 @@ feature {NONE} -- Initialization
 feature -- Attributes
 --	mda : ETF_MODEL_ACCESS -- dont need this anymore, parent class declares model as global
 --	starfighter_location : TUPLE[row: INTEGER;col: INTEGER] -- X Y location ADDED -- using location instead in parent class
---	starfighter_attributes : ATTRIBUTE_VALUES -- declaring attributes and currrent attributes in parent class 
+--	starfighter_attributes : ATTRIBUTE_VALUES -- declaring attributes and currrent attributes in parent class
 
 feature -- Commands
 
@@ -61,6 +64,7 @@ feature -- Commands
 --				+ model.letter[location.row] + "," + location.col.out + "] -> [" + model.letter[row] + ","+ column.out +"]")
 				-- modular way:
 			model.star_action_msg_update ("The Starfighter(id:0) moves: " + location_out + " -> " + location_string (row, column))
+--			model.star_action_msg_update (moves_msg(row,column)) -- USES "A" isntead of "THE" bruh why did you do this to use jackie
 			-- remove previous location
 			model.grid[location.row][location.col] := "_"
 			-- set new location
@@ -76,9 +80,88 @@ feature -- Commands
 			model.star_action_msg_update ("The Starfighter(id:0) passes at location " + location_out + ", doubling regen rate.") -- C
 		end
 
-	special
+	fire
+		local
+			proj : PROJECTILE
+			projectile_type : INTEGER
+			msg : STRING
 		do
-			-- do special stuff
+			create msg.make_empty
+			projectile_type := model.app.states[1].select_value
+
+			-- Regen energy & health
+			regen_both
+
+			-- Lose energy
+			if current_attributes.projectile_cost_type then -- health if true
+				current_attributes.set_health (current_attributes.health - current_attributes.projectile_cost)
+			else -- energy
+				current_attributes.set_energy (current_attributes.energy - current_attributes.projectile_cost)
+			end
+
+			if projectile_type = 1 then -- STANDARD
+				model.add_projectile (create {STANDARD}.make)
+			elseif projectile_type = 2 then
+
+			elseif projectile_type = 3 then
+
+			elseif projectile_type = 4 then
+
+			elseif projectile_type = 5 then
+
+			end
+
+--			model.projectiles.force (create {STANDARD}.make, 1)
+			proj := model.projectiles[model.projectiles.count]
+
+
+
+			if not proj.outside_board then -- print on grid
+				model.grid[proj.location.row][proj.location.col] := "*"
+--				msg := "A friendly projectile(id:-" + model.projectiles.count.out +") spawns at location " + proj.location_out + "." -- C
+				msg := "A friendly projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
+
+				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
+				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
+			else
+				-- dont print
+				msg := "OUTSIDEEE DA THING"
+			end
+
+			model.star_action_msg_update ("The Starfighter(id:0) fires at location " + location_out + ".%N      "
+				+ msg) -- C
+		end
+
+	special
+		local
+--			la : ATTRIBUTE_VALUES
+--			ca : ATTRIBUTE_VALUES
+			selected_value : INTEGER
+		do
+--			la := attributes
+--			ca := current_attributes
+			regen_both
+
+			selected_value := model.app.states[4].select_value
+
+
+			if selected_value = 1 then -- recall 50 energy
+				--The Starfighter(id:0) uses special, teleporting to: [C,1]
+				current_attributes.set_energy (current_attributes.energy - 50)
+				model.grid[location.row][location.col] := "_" -- clear previous location
+				set_location (model.grid.count //2 + model.grid.count \\ 2, 1)
+				model.grid[location.row][location.col] := "S"
+				model.star_action_msg_update ("The Starfighter(id:0) uses special, teleporting to: " + location_out)
+			elseif selected_value = 2 then -- repair 50 energy
+
+			elseif selected_value = 3 then -- overcharge up to 50 hp
+				-- DO THIS*******************************************************
+			elseif selected_value = 4 then -- deploy drones 100 energy
+
+			elseif selected_value = 5 then -- orbital strik 100 energy
+
+			end
+
 		end
 --	set_location(row : INTEGER; column : INTEGER)
 --		do

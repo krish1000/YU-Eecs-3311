@@ -81,7 +81,10 @@ feature -- command
 										move_distance*model.starfighter.current_attributes.move_cost
 										<= model.starfighter.current_attributes.energy
 									then
+										model.command_msg.append ("move")
+										model.game_update
 										model.starfighter.move (l_row, l_col) -- move to new location
+
 									else
 										-- print error msg
 										model.errorstate_increase ("Not enough resources to move.") -- C
@@ -108,7 +111,7 @@ feature -- command
 					end
 
 			-- perform some update on the model state
-			model.default_update
+
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

@@ -120,6 +120,11 @@ feature -- updates
 		end
 
 feature -- Queries
+--	projectile_enough_resources : BOOLEAN
+--		do
+--			
+--		end
+
 	output : STRING
 		do
 			--

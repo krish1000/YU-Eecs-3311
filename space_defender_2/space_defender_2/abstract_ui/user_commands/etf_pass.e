@@ -15,13 +15,16 @@ feature -- command
     	do
 
 			if model.in_game then
+				model.command_msg.append ("pass")
+				model.game_update
 				model.starfighter.pass
+
 			else
 				model.errorstate_increase ("Command can only be used in game.") -- C
 			end
 
 			-- perform some update on the model state
-			model.default_update
+
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

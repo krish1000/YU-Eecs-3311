@@ -19,7 +19,7 @@ feature {NONE} -- Initialization
 			-- Initialization for `Current'.
 		do
 --			select_value := 1 -- default value
-			state_name := "summary setup"
+			state_name := "setup summary"
 			create types_string_format.make_empty -- not used, need to declare b/c inherited
 		end
 
