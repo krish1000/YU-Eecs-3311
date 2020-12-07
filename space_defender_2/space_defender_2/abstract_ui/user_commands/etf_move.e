@@ -82,9 +82,12 @@ feature -- command
 										<= model.starfighter.current_attributes.energy
 									then
 										model.command_msg.append ("move")
-										model.game_update
-										model.starfighter.move (l_row, l_col) -- move to new location
+--										model.game_update
 
+--										model.starfighter.move (l_row, l_col) -- move to new location
+										model.in_game_state.set_column (l_col)
+										model.in_game_state.set_row (l_row)
+										model.in_game_state.game_update
 									else
 										-- print error msg
 										model.errorstate_increase ("Not enough resources to move.") -- C

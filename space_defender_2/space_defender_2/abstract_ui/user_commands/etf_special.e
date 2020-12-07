@@ -18,8 +18,9 @@ feature -- command
 					enough_resources
 				then
 					model.command_msg.append ("special")
-					model.game_update
-					model.starfighter.special
+--					model.game_update
+					model.in_game_state.game_update
+--					model.starfighter.special
 
 				else
 					model.errorstate_increase ("Not enough resource to fire.") -- C

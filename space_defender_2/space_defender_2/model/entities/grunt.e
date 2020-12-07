@@ -18,6 +18,10 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
+			set_variables
+			stopped_before_enemy := False
+			alive:= True
+			previously_alive := False
 			name := "Grunt"
 			symbol := "G"
 			id := model.enemies.count + 1
@@ -33,30 +37,42 @@ feature {NONE} -- Initialization
 			create current_attributes.make
 			reset_current_attributes -- current_attributes := attributes.deep_twin
 			current_attributes.set_projectile_dmg (15)
+
+
+			-- PUTS INTO HASHTABLE IN MODEL
+			put_in_struct
 		end
 
 feature -- Commands
 
 	execute
 		do
-			-- if alive check that
-
-			-- regen
-
-			if model.command_msg.is_equal("pass") then
-				pass
-				model.test_msg.append("PASS IN GRUNTTT") --------------------------
-			elseif model.command_msg.is_equal("special") then
-				special
-			end
+			-- Regen
+--			current_attributes.set_health (current_attributes.health + current_attributes.health_regen)
+--			if current_attributes.health > attributes.health then
+--				current_attributes.set_health (attributes.health)
+--			end
+			regen
 
 			if can_see_starfighter then
 				seen
 			else
 				not_seen
 			end
+		end
 
-			-- end ting
+	preemptive_action
+		do
+			-- if sf passes, increase both hp and total hp by 10	
+
+			-- if sf special, increase both hp and totalhp by 20
+			-- TURN DOESNT END FOR BOTH^^
+			if model.command_msg.is_equal("pass") then
+				pass
+--				model.test_msg.append("PASS IN GRUNTTT") --------------------------
+			elseif model.command_msg.is_equal("special") then
+				special
+			end
 		end
 
 	seen
@@ -67,7 +83,7 @@ feature -- Commands
 			-- fire projectile, spawns directly left of grunt
 			-- spawned projectile moves 4 left per turn, base dmg 15
 			move(4) -- moves 4 left
-			if not outside_board then
+			if not outside_board and alive then
 				current_attributes.set_projectile_dmg (15)
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
@@ -87,7 +103,7 @@ feature -- Commands
 			-- fire projectile, spawns directly left of grunt
 			-- spawned projectile moves 4 left per turn, base dmg 15
 			move(2)
-			if not outside_board then
+			if not outside_board and alive then
 				current_attributes.set_projectile_dmg (15)
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
@@ -124,10 +140,13 @@ feature -- Commands
 		do
 			if not proj.outside_board then -- print on grid
 				model.grid[proj.location.row][proj.location.col] := "<"
-				msg := "A enemy projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
+
+
+				-- THESE 2 LINES WERE UNCOMMENTED 2020-12-05
+--				msg := "A enemy projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
 
 				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
-				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
+--				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
 			else
 				-- dont print
 --				msg := "OUTSIDEEE DA THING"

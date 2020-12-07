@@ -60,11 +60,12 @@ feature {NONE} -- Initialization
 			welcome := True
 			create error_msg.make_empty
 			create test_msg.make_empty
-
+			create collision_test_msg.make_empty
 
 
 
 			---- GRID ----
+			create locations.make (100) -- temp allocated size
 			create grid.make_empty
 			create letter.make_empty
 			letter := <<"A","B","C","D","E","F","G","H","I","J">>
@@ -80,7 +81,8 @@ feature {NONE} -- Initialization
 			-----
 			in_setup := FALSE
 			in_game := FALSE
-
+			game_over := FALSE
+			create in_game_state.make
 			-- starfighter
 --			create starfighter_location -- empty tuple
 --			create starfighter.make
@@ -158,12 +160,14 @@ feature -- model attributes
 	-------- STRINGS -----------
 	command_msg : STRING
 	s : STRING
+	collision_test_msg : STRING
 	state : INTEGER
 	welcome : BOOLEAN
 	error_msg : STRING
 	test_msg : STRING
 	------------ GRID -------------
 	grid : ARRAY[ARRAY [STRING]]
+	locations : HASH_TABLE[ENTITY, TUPLE[INTEGER, INTEGER]]
 	letter : ARRAY[STRING]
 --	in_game_state : IN_GAME
 	--------- GAME PARAMS ---------
@@ -177,8 +181,9 @@ feature -- model attributes
 	------ GAME STATES ---------
 	in_setup : BOOLEAN
 	in_game : BOOLEAN
+	game_over : BOOLEAN
 	errorState : INTEGER
-
+	in_game_state : IN_GAME
 --	states_arr : ARRAY[STATES]
 --	states_arr_cursor : INTEGER
 	states_index : INTEGER
@@ -205,10 +210,21 @@ feature -- model msg updates
 		end
 
 feature -- model state changes
+	set_game_over(b : BOOLEAN)
+		do
+			game_over := b
+		end
+
 	errorState_increase(msg: STRING) -- increases error state by 1
 		do
 			error_msg := msg -- sets errormsg
 			errorState := errorState + 1
+		end
+
+	state_increase
+		do
+			state := state + 1
+			errorstate := 0
 		end
 
 	test_msg_update(msg : STRING)
@@ -360,141 +376,141 @@ feature -- game commands
 
 		end
 
-	game_update
-		do
-			state := state + 1
-			errorstate := 0
-			test_msg.append ("%N PROJECTILE COUNT " + projectiles.count.out)
-			-- Move projectiles
-			across
-				projectiles is proj
-			loop
-				test_msg.append ("%N PROJECTILE COUNT " + proj.outside_board.out)
-				if not proj.outside_board then -- put projectiles on grid -- NEED TO ALSO REMOVE PRJOECTILES IF IT LEFT THE BOARD IN PREVIOUS STATE
-					-------------------- PROJECTILE
+--	game_update
+--		do
+--			state := state + 1
+--			errorstate := 0
+--			test_msg.append ("%N PROJECTILE COUNT " + projectiles.count.out)
+--			-- Move projectiles
+--			across
+--				projectiles is proj
+--			loop
+--				test_msg.append ("%N PROJECTILE COUNT " + proj.outside_board.out)
+--				if not proj.outside_board then -- put projectiles on grid -- NEED TO ALSO REMOVE PRJOECTILES IF IT LEFT THE BOARD IN PREVIOUS STATE
+--					-------------------- PROJECTILE
 
-					grid[proj.location.row][proj.location.col] := "_" -- replace previous position
-					proj.move -- move projectile
-					if not proj.outside_board then
-						toggle_proj_msg.append ("%N    " + proj.stats_out)
-					end
+--					grid[proj.location.row][proj.location.col] := "_" -- replace previous position
+--					proj.move -- move projectile
+--					if not proj.outside_board then
+--						toggle_proj_msg.append ("%N    " + proj.stats_out)
+--					end
 
-					-------------------- FRIENDLY PROJ
-					if proj.friendly then
---						grid[proj.location.row][proj.location.col] := "_"
---						proj.move
-						toggle_friend_proj_msg.append ("%N    " + proj.status)
-						if not proj.outside_board then
-							grid[proj.location.row][proj.location.col] := "*"
-							-- NEED TO DO COLLISON CHECKING
-						else -- just went outside of board
-
-						end
-					-------------------- ENEMY PROJ
-					else
---						grid[proj.location.row][proj.location.col] := "_"
---						proj.move
-						test_msg.append ("%N NOT FRIENDLY REEE") -----------------------------
+--					-------------------- FRIENDLY PROJ
+--					if proj.friendly then
+----						grid[proj.location.row][proj.location.col] := "_"
+----						proj.move
+--						toggle_friend_proj_msg.append ("%N    " + proj.status)
 --						if not proj.outside_board then
-							toggle_enemy_proj_msg.append ("%N    " + proj.status)
+--							grid[proj.location.row][proj.location.col] := "*"
+--							-- NEED TO DO COLLISON CHECKING
+--						else -- just went outside of board
+
 --						end
+--					-------------------- ENEMY PROJ
+--					else
+----						grid[proj.location.row][proj.location.col] := "_"
+----						proj.move
+--						test_msg.append ("%N NOT FRIENDLY REEE") -----------------------------
+----						if not proj.outside_board then
+--							toggle_enemy_proj_msg.append ("%N    " + proj.status)
+----						end
 
-						if not proj.outside_board then
-							grid[proj.location.row][proj.location.col] := "<"
-							-- NEED TO DO COLLISON CHECKING
-						else --- just went outside of board
+--						if not proj.outside_board then
+--							grid[proj.location.row][proj.location.col] := "<"
+--							-- NEED TO DO COLLISON CHECKING
+--						else --- just went outside of board
 
-						end
-						-- NEED TO DO COLLISION CHECKING
-						-- with enemy, can enemy projs collide with one antoher?
-						-- also check wit hspawn
-						-- with fridnly projectile
-						-- with starfighter
-					end
-				end
-			end
-			execute_enemies
-			enemy_spawn
-		end
+--						end
+--						-- NEED TO DO COLLISION CHECKING
+--						-- with enemy, can enemy projs collide with one antoher?
+--						-- also check wit hspawn
+--						-- with fridnly projectile
+--						-- with starfighter
+--					end
+--				end
+--			end
+--			execute_enemies
+--			enemy_spawn
+--		end
 
-	execute_enemies
-		do
-			across
-				enemies is enemy
-			loop
---				grid[proj.location.row][proj.location.col] := "_"
-				enemy.execute
-				if not enemy.outside_board then
+--	execute_enemies
+--		do
+--			across
+--				enemies is enemy
+--			loop
+----				grid[proj.location.row][proj.location.col] := "_"
+--				enemy.execute
+--				if not enemy.outside_board then
 
-					toggle_enemy_msg.append (enemy.stats_out)
-				end
-			end
-		end
+--					toggle_enemy_msg.append (enemy.stats_out)
+--				end
+--			end
+--		end
 
-	enemy_spawn
-		local
---			rng : RANDOM_GENERATOR
-			random : RANDOM_GENERATOR_ACCESS
-			l_i : INTEGER
-			l_j : INTEGER
-			enemy : ENEMY
-		do
-			if state > 0 then
-				l_i := random.rchoose (1, l_row) -- determines which row enemy spawns in
-				l_j := random.rchoose (1, 100) -- determines which enemy type spawns
-				test_msg.append ("%N RANDOM TYPE: " + l_j.out + " " + l_col.out) ------------------------------
-	--			play(row, column, g_threshold, f_threshold, c_threshold, i_threshold, p_threshold)
-				if l_j < lg_threshold then -- spawn grunt
-					enemy := create {GRUNT}.make
-					add_enemy (enemy)
-				elseif  l_j < lf_threshold then -- spawn fighter
+--	enemy_spawn
+--		local
+----			rng : RANDOM_GENERATOR
+--			random : RANDOM_GENERATOR_ACCESS
+--			l_i : INTEGER
+--			l_j : INTEGER
+--			enemy : ENEMY
+--		do
+--			if state > 0 then
+--				l_i := random.rchoose (1, l_row) -- determines which row enemy spawns in
+--				l_j := random.rchoose (1, 100) -- determines which enemy type spawns
+--				test_msg.append ("%N RANDOM TYPE: " + l_j.out + " " + l_col.out) ------------------------------
+--	--			play(row, column, g_threshold, f_threshold, c_threshold, i_threshold, p_threshold)
+--				if l_j < lg_threshold then -- spawn grunt
+--					enemy := create {GRUNT}.make
+--					add_enemy (enemy)
+--				elseif  l_j < lf_threshold then -- spawn fighter
 
-				elseif  l_j < lc_threshold then -- spawn carrier
+--				elseif  l_j < lc_threshold then -- spawn carrier
 
-				elseif  l_j < li_threshold then -- spawn interceptor
+--				elseif  l_j < li_threshold then -- spawn interceptor
 
-				elseif  l_j < lp_threshold then -- spawn pylon
+--				elseif  l_j < lp_threshold then -- spawn pylon
 
-				-- what about < 101 i think im missing something********nvm it just doesnt spawn anything
-				end
-
-				if attached enemy as e then
-					e.set_location (l_i, l_col)
-					grid[l_i][l_col] := e.symbol
-
-					-- MSG --
-					toggle_natural_enemy_action_msg.append ("%N    A " + e.name + "(id:" + e.id.out + ") spawns at location " + e.location_out + ".")
-					toggle_enemy_msg.append(e.stats_out)
-				end
-
---				if enemies.count > 0 then
---					enemy := enemies[enemies.count] -- last enemy is the one we just generated
---					enemy.set_location (l_i, l_col)
---					-- ALSO NEED TO CHECK FOR COLLISION ON SPAWNING LOCATION******** BUT IGNORING FOR NOW************
---					grid[l_i][l_col] := enemy.symbol
+--				-- what about < 101 i think im missing something********nvm it just doesnt spawn anything
 --				end
 
-			end
+--				if attached enemy as e then
+--					e.set_location (l_i, l_col)
+--					grid[l_i][l_col] := e.symbol
+
+--					-- MSG --
+--					toggle_natural_enemy_action_msg.append ("%N    A " + e.name + "(id:" + e.id.out + ") spawns at location " + e.location_out + ".")
+--					toggle_enemy_msg.append(e.stats_out)
+--				end
+
+----				if enemies.count > 0 then
+----					enemy := enemies[enemies.count] -- last enemy is the one we just generated
+----					enemy.set_location (l_i, l_col)
+----					-- ALSO NEED TO CHECK FOR COLLISION ON SPAWNING LOCATION******** BUT IGNORING FOR NOW************
+----					grid[l_i][l_col] := enemy.symbol
+----				end
+
+--			end
 
 
---------------------------------------------------------
---			-- generates a number from 50 to 60 inclusive
---			num := random.rchoose(50,60)
---			test_msg.append ("  First number generated (e.g. from [50,60]) is always the minimun of the interval:" + num.out + "%N")
+----------------------------------------------------------
+----			-- generates a number from 50 to 60 inclusive
+----			num := random.rchoose(50,60)
+----			test_msg.append ("  First number generated (e.g. from [50,60]) is always the minimun of the interval:" + num.out + "%N")
 
---			-- generates a number from 1 to 101 inclusive
---			num := random.rchoose(1,101)
---			test_msg.append ("  Second number generated (e.g. from [1,101]) is always still the minimun of the interval:" + num.out + "%N")
+----			-- generates a number from 1 to 101 inclusive
+----			num := random.rchoose(1,101)
+----			test_msg.append ("  Second number generated (e.g. from [1,101]) is always still the minimun of the interval:" + num.out + "%N")
 
---			-- generates a number from 50 to 60 inclusive
---			num := random.rchoose(50,60)
---			test_msg.append ("  Starting from the third number, a random number is generated from the interval:" + num.out + "%N")
+----			-- generates a number from 50 to 60 inclusive
+----			num := random.rchoose(50,60)
+----			test_msg.append ("  Starting from the third number, a random number is generated from the interval:" + num.out + "%N")
 
---			-- generates a number from 40 to 60 inclusive
---			num := random.rchoose(40,60)
---			test_msg.append ("  A random number is generated from the interval:" + num.out)
+----			-- generates a number from 40 to 60 inclusive
+----			num := random.rchoose(40,60)
+----			test_msg.append ("  A random number is generated from the interval:" + num.out)
 
-		end
+--		end
 
 feature -- model operations
 	default_update
@@ -541,6 +557,7 @@ feature -- model operations
 			-- // is division, \\ is modulo
 				grid[row//2 + row \\ 2][1] := "S"
 				starfighter.set_location(row//2 + row \\ 2, 1) -- setting  starfighter location
+				locations.put (starfighter, starfighter.location) -- PUTTING INTO HASH_TABLE, epic it auto updates cuz of reference obj
 				--Testing:
 --				grid[2][2] := starfighter.starfighter_location.row.out + " " + starfighter.starfighter_location.col.out
 		end
@@ -636,7 +653,7 @@ feature -- queries
 				normal_or_debug := "normal"
 			end
 
-			if not in_game and not in_setup then
+			if (not in_game and not in_setup) or game_over  then -- CHANGED 2020-12-06
 				Result.append ("  state:not started, " + normal_or_debug + ", " + status) -- temporary
 			elseif in_setup and not in_game then
 				Result.append ("  state:" + app.states[states_index].state_name + ", " + normal_or_debug + ", " + status)
@@ -676,6 +693,8 @@ feature -- queries
 
 			------ TESTING PURPOSES: ----------
 --			Result.append ("%N  TESTMSG: "+ command_msg +  " " + test_msg)
+--			Result.append ("%N  " + collision_test_msg)
+--			Result.append (hash_out)
 			-----------------------------------
 
 			if welcome then -- welcome msg
@@ -684,12 +703,18 @@ feature -- queries
 				welcome := False
 			end
 
+			if game_over then
+				in_game := False -- game over not ingame state anymore
+				Result.append("%N  The game is over. Better luck next time!")
+				game_over := False
+			end
+
 			--- RESET ---
 			error_msg := ""
 			command_msg := ""
 
 			test_msg := ""
-
+			collision_test_msg := ""
 
 			toggle_msg := ""
 			toggle_friend_proj_msg := ""
@@ -699,6 +724,23 @@ feature -- queries
 			toggle_enemy_action_msg := ""
 			toggle_enemy_msg := ""
 		end
+
+		hash_out : STRING -- Used for testing, printing out statuses of objs on the board
+			do
+				create Result.make_empty
+				across
+					locations is l
+				loop
+					Result.append ("%N  " + l.symbol + ": " + l.location_out)
+					if attached {PROJECTILE} l as lp then
+						Result.append(" currDmg: " + lp.current_damage.out)
+					elseif attached {ENEMY} l as le then
+						Result.append (" currHP: " + le.current_attributes.health.out)
+					elseif attached {STARFIGHTER} l as ls then
+						Result.append (" currHP: " + ls.current_attributes.health.out + " currEnergy: " + ls.current_attributes.energy.out)
+					end
+				end
+			end
 
 end
 

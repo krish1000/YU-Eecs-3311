@@ -17,8 +17,9 @@ feature -- command
     		if model.in_game then
 				if projectile_enough_resources then
 					model.command_msg.append ("fire")
-					model.game_update
-					model.starfighter.fire
+--					model.game_update
+					model.in_game_state.game_update
+--					model.starfighter.fire
 
 				else
 					model.errorstate_increase ("Not enough resources to fire.") -- C
