@@ -61,11 +61,12 @@ feature {NONE} -- Initialization
 			create error_msg.make_empty
 			create test_msg.make_empty
 			create collision_test_msg.make_empty
-
+			create test_double_interceptor_bug.make_empty
 
 
 			---- GRID ----
 			create locations.make (100) -- temp allocated size
+			locations.compare_objects -- COMPARE BY OBJECTS
 			create grid.make_empty
 			create letter.make_empty
 			letter := <<"A","B","C","D","E","F","G","H","I","J">>
@@ -161,6 +162,7 @@ feature -- model attributes
 	command_msg : STRING
 	s : STRING
 	collision_test_msg : STRING
+	test_double_interceptor_bug : STRING
 	state : INTEGER
 	welcome : BOOLEAN
 	error_msg : STRING
@@ -695,6 +697,7 @@ feature -- queries
 --			Result.append ("%N  TESTMSG: "+ command_msg +  " " + test_msg)
 --			Result.append ("%N  " + collision_test_msg)
 --			Result.append (hash_out)
+			Result.append (test_double_interceptor_bug)
 			-----------------------------------
 
 			if welcome then -- welcome msg
@@ -715,6 +718,7 @@ feature -- queries
 
 			test_msg := ""
 			collision_test_msg := ""
+			test_double_interceptor_bug := ""
 
 			toggle_msg := ""
 			toggle_friend_proj_msg := ""
@@ -731,7 +735,7 @@ feature -- queries
 				across
 					locations is l
 				loop
-					Result.append ("%N  " + l.symbol + ": " + l.location_out)
+					Result.append ("%N  " + l.symbol + ", id: " + l.id.out + ", loc " + l.location_out)
 					if attached {PROJECTILE} l as lp then
 						Result.append(" currDmg: " + lp.current_damage.out)
 					elseif attached {ENEMY} l as le then

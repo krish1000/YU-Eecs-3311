@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 
 
 			-- put to hash
-			put_in_struct
+--			put_in_struct
 		end
 
 feature -- Attributes

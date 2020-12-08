@@ -40,7 +40,7 @@ feature {NONE} -- Initialization
 
 
 			-- PUTS INTO HASHTABLE IN MODEL
-			put_in_struct
+--			put_in_struct
 		end
 
 feature -- Commands
@@ -88,30 +88,8 @@ feature -- Commands
 			if not outside_board and alive then
 				-- SPAWN INTERCEPTOR HERE LEFTWARDS****************
 				-- NOTE IF AN ENEMY IS OCCUPYING SPAWN LOCATION THEN DONT SPAWN
-				if model.locations.has_key ([location.row, location.col - 1]) then
-					if not attached {ENEMY} model.locations.found_item then
-						interceptor := create {INTERCEPTOR}.make
-						interceptor.set_location (location.row, location.col - 1) -- spawns 1 left
-						model.add_enemy (interceptor)
-
-						model.grid[interceptor.location.row][interceptor.location.col] := interceptor.symbol -- UPDATE grid
-
-						-- MSG --
-						model.toggle_natural_enemy_action_msg.append ("%N    A " + interceptor.name + "(id:" + interceptor.id.out + ") spawns at location " + interceptor.location_out + ".")
-						model.toggle_enemy_msg.append(interceptor.stats_out)
-					end
-				end
-
+				spawn_collision (location.row, location.col - 1)
 			end
---			if not outside_board and alive then
---				current_attributes.set_projectile_dmg (15)
---				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
---				proj.set_current_damage (current_attributes.projectile_dmg)
---				proj.set_move_distance (4)
---				model.add_projectile (proj)
-
---				enemy_action(proj)
---			end
 		end
 
 	pass
@@ -124,44 +102,14 @@ feature -- Commands
 				-- NOTE IF AN ENEMY IS OCCUPYING SPAWN LOCATION THEN DONT SPAWN
 				-- SPawn 2, oone above one below
 
-				-- SPAWN ABOVE
-				if
-					(model.locations.has_key ([location.row + 1, location.col])
-					and then not attached {ENEMY} model.locations.found_item)
-					or
-					not model.locations.has_key ([location.row + 1, location.col])
-				then
+				-- Above
+				spawn_collision (location.row - 1, location.col)
 
-					interceptor := create {INTERCEPTOR}.make
-					interceptor.set_location (location.row + 1, location.col)
-					model.add_enemy (interceptor)
+				-- Below
+				spawn_collision (location.row + 1, location.col)
 
-					model.grid[interceptor.location.row][interceptor.location.col] := interceptor.symbol -- UPDATE grid
 
-					-- MSG --
-					model.toggle_natural_enemy_action_msg.append ("%N    A " + interceptor.name + "(id:" + interceptor.id.out + ") spawns at location " + interceptor.location_out + ".")
-					model.toggle_enemy_msg.append(interceptor.stats_out)
 
-				end
-
-				-- SPAWN BELOW
-				if
-					(model.locations.has_key ([location.row + 1, location.col])
-					and then not attached {ENEMY} model.locations.found_item)
-					or
-					not model.locations.has_key ([location.row + 1, location.col])
-				then
-						interceptor := create {INTERCEPTOR}.make
-						interceptor.set_location (location.row - 1, location.col)
-						model.add_enemy (interceptor)
-
-						model.grid[interceptor.location.row][interceptor.location.col] := interceptor.symbol -- UPDATE grid
-
-						-- MSG --
-						model.toggle_natural_enemy_action_msg.append ("%N    A " + interceptor.name + "(id:" + interceptor.id.out + ") spawns at location " + interceptor.location_out + ".")
-						model.toggle_enemy_msg.append(interceptor.stats_out)
-				
-				end
 			end
 			-- END TURN
 		end
@@ -172,6 +120,76 @@ feature -- Commands
 			-- Regen again? + 10 not 100% sure thoo *********
 			regen -- setted as 10 in create make
 			-- dont end turn
+		end
+
+
+	spawn_collision(row : INTEGER; col : INTEGER) -- NONE
+		local
+			interceptor : INTERCEPTOR
+			found : BOOLEAN
+		do
+
+--			----------- TESINTG	
+--			model.test_double_interceptor_bug.append("%N  Called Spawncollision : " + location_out)
+--			if model.locations.has_key([row,col]) then
+--				model.test_double_interceptor_bug.append("%N  CAssssss")
+--				if attached {ENTITY} model.locations.found_item as le then
+--					model.test_double_interceptor_bug.append("%N  ASDF: ENEMY FOUNDDDDDD:" + "" + le.location_out)
+--				end
+--			end
+
+------			if row = 7 and col = 26 then
+----			model.test_double_interceptor_bug.append ("%N -----------")
+----			model.test_double_interceptor_bug.append("%N  Called Spawncollision : " + location_out)
+----			model.test_double_interceptor_bug.append ("%N" + model.hash_out)
+------			end
+--			-------- TESTING
+			found := false
+			across
+				model.enemies is le
+			loop
+				if le.location.row = row and le.location.col = col then
+					model.grid[row][col] := le.symbol
+					found := true
+				end
+			end
+
+			if not found then
+
+
+				if
+					(model.locations.has_key ([row, col])
+					and not (attached {ENEMY} model.locations.found_item))
+					or
+					(not model.locations.has_key ([row, col]))
+				then
+					interceptor := create {INTERCEPTOR}.make
+					interceptor.set_dont_move -- so it doesn't get executed for current turn
+					interceptor.set_location (row, col) -- spawns 1 left
+					model.add_enemy (interceptor)
+
+					-- MSG --
+					model.toggle_enemy_action_msg.append ("%N      A " + interceptor.name + "(id:" + interceptor.id.out + ") spawns at location " + interceptor.location_out + ".")
+
+					-- COllision with projectiles n stuff
+					if model.locations.has_key ([interceptor.location.row, interceptor.location.col]) then -- Entity exists in the spawning location, either friendlyproj/enemyproj/starfighter
+						if attached {ENTITY} model.locations.found_item as l_item then
+							interceptor.modify_collision (l_item)
+						end
+					end
+
+					if interceptor.alive and not interceptor.outside_board then
+						model.grid[interceptor.location.row][interceptor.location.col] := interceptor.symbol -- UPDATE grid
+						interceptor.put_in_struct
+	--					model.toggle_enemy_msg.append(interceptor.stats_out)
+					end
+
+					model.toggle_enemy_action_msg.append (interceptor.collision_msg)
+
+				else
+
+				end
+			end
 		end
 
 -- Queries

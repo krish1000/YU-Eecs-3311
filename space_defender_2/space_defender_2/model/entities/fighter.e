@@ -40,7 +40,7 @@ feature {NONE} -- Initialization
 
 
 			-- PUTS INTO HASHTABLE IN MODEL
-			put_in_struct
+--			put_in_struct
 		end
 
 	execute
@@ -75,9 +75,11 @@ feature {NONE} -- Initialization
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
 				proj.set_move_distance (3) -- moves 3 spaces per turn left
-				model.add_projectile (proj)
+--				model.add_projectile (proj)
 
-				enemy_action(proj)
+				proj.spawn_collision
+				model.toggle_enemy_action_msg.append (proj.collision_msg)
+--				enemy_action(proj)
 			end
 
 		end
@@ -91,9 +93,11 @@ feature {NONE} -- Initialization
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
 				proj.set_move_distance (6) -- moves 6 left
-				model.add_projectile (proj)
+--				model.add_projectile (proj)
 
-				enemy_action(proj)
+				proj.spawn_collision
+				model.toggle_enemy_action_msg.append (proj.collision_msg)
+--				enemy_action(proj)
 			end
 
 		end
@@ -117,33 +121,36 @@ feature {NONE} -- Initialization
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
 				proj.set_move_distance (10) -- moves 10 left
-				model.add_projectile (proj)
+--				model.add_projectile (proj)
 
-				enemy_action(proj)
+				proj.spawn_collision
+				model.toggle_enemy_action_msg.append (proj.collision_msg)
+--				enemy_action(proj)
+
 			end
 			-- END TURN*******
 		end
 
 ---- Queries
 
-	enemy_action(proj : ENEMY_PROJ)
-		local
-			msg : STRING
-		do
-			if not proj.outside_board then -- print on grid
-				model.grid[proj.location.row][proj.location.col] := "<"
+--	enemy_action(proj : ENEMY_PROJ)
+--		local
+--			msg : STRING
+--		do
+--			if not proj.outside_board then -- print on grid
+--				model.grid[proj.location.row][proj.location.col] := "<"
 
 
-				-- THESE 2 LINES WERE UNCOMMENTED 2020-12-05
---				msg := "A enemy projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
+--				-- THESE 2 LINES WERE UNCOMMENTED 2020-12-05
+----				msg := "A enemy projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
 
-				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
---				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
-			else
-				-- dont print
---				msg := "OUTSIDEEE DA THING"
-			end
+--				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
+----				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
+--			else
+--				-- dont print
+----				msg := "OUTSIDEEE DA THING"
+--			end
 
 
-		end
+--		end
 end

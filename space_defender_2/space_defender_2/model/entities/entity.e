@@ -194,7 +194,12 @@ feature -- Queries
 		do
 			create Result.make_empty
 			if column > 0 then
-				Result.append ("A " + name + "(id:" + id.out + ") moves: " + location_out + " -> " + location_string (row, column))
+				if location_out.is_equal (location_string (row, column)) then
+					Result.append ("A " + name + "(id:" + id.out + ") stays at: " + location_out)
+				else
+					Result.append ("A " + name + "(id:" + id.out + ") moves: " + location_out + " -> " + location_string (row, column))
+				end
+
 			else
 				Result.append ("A " + name + "(id:" + id.out + ") moves: " + location_out + " -> out of board")
 			end

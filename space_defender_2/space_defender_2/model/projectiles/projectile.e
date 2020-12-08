@@ -61,7 +61,50 @@ feature -- commands
 			status := s
 		end
 
+--	spawn_collision(row : INTEGER; col : INTEGER) -- NONE
+--		do
+--			set_location (row, col)
+----			model.add_projectile (Current)
 
+--			-- COllision with projectiles n stuff
+--			if model.locations.has_key ([location.row, location.col]) then -- Entity exists in the spawning location, either friendlyproj/enemyproj/starfighter
+--				if attached {ENTITY} model.locations.found_item as l_item then
+--					modify_collision (l_item)
+--				end
+--			end
+
+--			if alive and not outside_board then
+--				model.grid[location.row][location.col] := symbol -- UPDATE grid
+--				put_in_struct
+--			end
+
+----			model.toggle___.append (collision_msg)
+
+--		end
+
+	spawn_collision-- NONE
+		do
+--			set_location (row, col)
+			model.add_projectile (Current)
+
+			-- COllision with projectiles n stuff
+			if model.locations.has_key ([location.row, location.col]) then -- Entity exists in the spawning location, either friendlyproj/enemyproj/starfighter
+--				if  then
+--					
+--				end
+				if attached {ENTITY} model.locations.found_item as l_item then
+					modify_collision (l_item)
+				end
+			end
+
+			if alive and not outside_board then
+				model.grid[location.row][location.col] := symbol -- UPDATE grid
+				put_in_struct
+			end
+
+--			model.toggle___.append (collision_msg)
+
+		end
 
 feature -- Query
 --	outside_board : BOOLEAN

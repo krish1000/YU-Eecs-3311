@@ -110,6 +110,7 @@ feature -- Commands
 			-- insert star fighter act phase 3 *********
 			execute_preemptive_enemy_actions -- HAS TO BE BEFORE STARFIGHTER ACTION
 			execute_starfighter
+
 			-- insert enemy vision update phase 4 *******
 --			execute_preemptive_enemy_actions -- moved 2020-12-07
 			execute_enemies -- phase 5 enemy act
@@ -226,7 +227,7 @@ feature -- Commands
 					if not enemy.outside_board then
 
 						model.toggle_enemy_msg.append (enemy.stats_out)
---						model.toggle_enemy_action_msg.append (enemy.collision_msg) -- order is not proper for when it fires
+						model.toggle_enemy_action_msg.append (enemy.collision_msg) -- order is not proper for when it fires
 					end
 				end
 			end
@@ -277,11 +278,29 @@ feature -- Commands
 --					model.locations.put (e, e.location)
 --					e.put_in_struct -- adds to hash
 
-					model.grid[l_i][l_col] := e.symbol
 
 					-- MSG --
 					model.toggle_natural_enemy_action_msg.append ("%N    A " + e.name + "(id:" + e.id.out + ") spawns at location " + e.location_out + ".")
-					model.toggle_enemy_msg.append(e.stats_out)
+--					model.toggle_enemy_msg.append(e.stats_out)
+
+					if model.locations.has_key ([e.location.row, e.location.col]) then -- Entity exists in the spawning location, either friendlyproj/enemyproj/starfighter
+						if attached {ENTITY} model.locations.found_item as l_item then
+							e.modify_collision (l_item)
+						end
+					else
+--						e.put_in_struct
+					end
+
+					if e.alive and not e.outside_board then
+						model.grid[l_i][l_col] := e.symbol
+						e.put_in_struct
+						model.toggle_enemy_msg.append(e.stats_out)
+					end
+
+
+
+					-- Collision MSG --
+					model.toggle_enemy_action_msg.append (e.collision_msg)
 				end
 			end
 		end

@@ -173,7 +173,8 @@ feature -- Commands
 			end
 
 			if projectile_type = 1 then -- STANDARD
-				model.add_projectile (create {STANDARD}.make)
+--				model.add_projectile (create {STANDARD}.make)
+				proj := create {STANDARD}.make
 			elseif projectile_type = 2 then
 
 			elseif projectile_type = 3 then
@@ -185,11 +186,12 @@ feature -- Commands
 			end
 
 --			model.projectiles.force (create {STANDARD}.make, 1)
-			proj := model.projectiles[model.projectiles.count]
+--			proj := model.projectiles[model.projectiles.count] -- DONT REALLY NEED THIS******** nvm causes to break
 
 
 
-			if not proj.outside_board then -- print on grid
+			if attached proj and then not proj.outside_board then -- print on grid
+				proj.spawn_collision
 				model.grid[proj.location.row][proj.location.col] := "*"
 --				msg := "A friendly projectile(id:-" + model.projectiles.count.out +") spawns at location " + proj.location_out + "." -- C
 				msg := "A friendly projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C

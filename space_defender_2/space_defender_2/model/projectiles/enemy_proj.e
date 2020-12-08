@@ -34,7 +34,8 @@ feature {NONE} -- Initialization
 			--A enemy projectile(id:-1) spawns at location [A,27].
 			model.toggle_enemy_action_msg.append ("%N      A enemy projectile(id:-" +id.out + ") spawns at location " + location_out + "." )
 
-			put_in_struct -- PUTS INTO HASHTABLE!!!!!!!!!
+--			put_in_struct -- PUTS INTO HASHTABLE!!!!!!!!!
+--			spawn_collision -- checks for spawn location, already added to array, and set lcoation
 		end
 
 feature -- Attributes
@@ -66,12 +67,12 @@ feature -- Commands
 					set_location(location.row, location.col - move_distance) -- move X left
 					-- A enemy projectile(id:-1) moves: [A,27] -> [A,23]
 	--				model.toggle_enemy_proj_msg.append ("%N    A enemy projectile(id:-" + id.out + ") moves: " + previous_location + " -> " + location_out )
-					if not outside_board then -- still in board
-						set_status(move_msg(previous_location, location_out))
-						put_in_struct -- put in new location into hashtable
-					else -- now moved outside of board
-						set_status(move_outside_msg(previous_location))
-					end
+				end
+				if not outside_board then -- still in board
+					set_status(move_msg(previous_location, location_out)) --- **********************
+					put_in_struct -- put in new location into hashtable
+				else -- now moved outside of board
+					set_status(move_outside_msg(previous_location))
 				end
 			else
 				-- dont move, already outside of board
@@ -87,6 +88,7 @@ feature -- Commands
 				if l_e.current_damage > current_damage then
 					-- current enemy projectile is destroyed
 					set_alive (false) -- dead, automatically removes from hash
+					set_location (l_e.location.row, l_e.location.col)
 					l_e.set_current_damage (l_e.current_damage - current_damage)
 
 				elseif l_e.current_damage < current_damage then
@@ -98,6 +100,7 @@ feature -- Commands
 					-- BOTH projectiles destroyed
 					l_e.set_alive (false) -- dead
 					set_alive(false) -- dead
+					set_location (l_e.location.row, l_e.location.col)
 				end
 			end
 			-- colliding with enemy proj ----------------
@@ -111,6 +114,11 @@ feature -- Commands
 			if attached {ENEMY} l_item as l_e then
 				--"The projectile collides with <entity name>(id:<id>) at location [X,Y], dealing <projectile damage - entity armour> damage."
 				set_alive(false) -- removed projectile
+				set_location (l_e.location.row, l_e.location.col)
+				---------------
+				model.grid[l_e.location.row][l_e.location.col] := l_e.symbol
+				---------------
+
 				collision_msg.append ("%N      The projectile collides with " + l_e.name + "(id:" + l_e.id.out + ") at location " + l_e.location_out + ", healing " + current_damage.out + " damage.")
 				l_e.current_attributes.set_health (l_e.current_attributes.health + current_damage)
 				if l_e.current_attributes.health > l_e.attributes.health then
@@ -122,6 +130,7 @@ feature -- Commands
 			if attached {STARFIGHTER} l_item as l_s then
 				--"The projectile collides with <entity name>(id:<id>) at location [X,Y], dealing <projectile damage - entity armour> damage."
 				set_alive(false) -- removed projectile
+				set_location (l_s.location.row, l_s.location.col)
 				collision_msg.append ("%N      The projectile collides with " + l_s.name + "(id:" + l_s.id.out + ") at location " + l_s.location_out + ", dealing " + ((current_damage - l_s.current_attributes.armour).max(0)).out + " damage.")
 				l_s.current_attributes.set_health (l_s.current_attributes.health - (current_damage - l_s.current_attributes.armour).max(0))
 				-- NEED TO APPEND DEATH MESSAGE IF ENTITY HAS BEEN DESTROYED!!!!!!!!!!!!!**************************
@@ -132,6 +141,12 @@ feature -- Commands
 					model.grid[l_s.location.row][l_s.location.col] := "X"
 					-- Need to make game end for next state
 					model.set_game_over(True)
+				else
+
+					---------------
+					model.grid[l_s.location.row][l_s.location.col] := l_s.symbol
+					---------------
+
 				end
 			end
 

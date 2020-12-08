@@ -48,18 +48,33 @@ feature -- Commands
 				collision (location.row, location.col - distance)
 				-- for now just moving by distance
 --				s := "%N    "
+
+--				------------TEST
+--				if attached {INTERCEPTOR} current then
+--					model.test_double_interceptor_bug.append ("%N   movetospecific: " + id.out)
+--				end
+--				---------------------
+
 				if alive and not stopped_before_enemy then
 					model.toggle_enemy_action_msg.append("%N    " + moves_msg(location.row, location.col - distance))
 					set_location (location.row, location.col - distance)
 
-					if not outside_board then
+					-- NEED TO DO COLLISION CHECKING HERE AS WELL***********8
+					if not outside_board and alive then
 	--					toggle_proj_msg.append ("%N    " + proj.stats_out)
 						model.grid[location.row][location.col] := symbol
 						put_in_struct -- PUT INTO HASHTABLE
-					end
 
-					-- NEED TO DO COLLISION CHECKING HERE AS WELL***********8
+--							-----------TEST
+--								if attached {INTERCEPTOR} current then
+--									model.test_double_interceptor_bug.append ("   PLACEDBACK: " + id.out)
+--								end
+--								---------------------
+
+
+					end
 				end
+
 
 				if stopped_before_enemy then
 					stopped_before_enemy := false
@@ -71,13 +86,27 @@ feature -- Commands
 
 	preemptive_action deferred end
 
+
 	collision(row : INTEGER; col : INTEGER)
 		local
 			lower : INTEGER
+--			less : BOOLEAN
 		do
 			----- Reset collision msg
 			collision_msg := ""
 			----
+			-----------------------------------------
+--			less := False
+--			greater := False
+--			lower := location.row
+--			if lower < row then -- moved above b/c collides with itself
+--				lower := lower + 1
+--				less := True
+--			else
+--				lower := lower - 1
+--				greater := True
+--			end
+			-----------------------------------------
 
 			from
 				lower := location.row
@@ -111,13 +140,29 @@ feature -- Commands
 
 						-- STOPP BEFORE ENEMY THIS IS CHANGED AND THE VARIABLE THING IN THE UNTIL
 						if stopped_before_enemy then
-							model.toggle_enemy_action_msg.append("%N    " + moves_msg(lower + 1, location.col)) -- stops before it
-							set_location (lower + 1, location.col)
+							if lower < row then
+								lower := lower - 1
+							else
+								lower := lower + 1
+							end
+							model.toggle_enemy_action_msg.append("%N    " + moves_msg(lower, location.col)) -- stops before it
+							set_location (lower, location.col)
 
 							if not outside_board then
 			--					toggle_proj_msg.append ("%N    " + proj.stats_out)
 								model.grid[location.row][location.col] := symbol
 								put_in_struct -- PUT INTO HASHTABLE
+
+
+
+--								----------TEST
+--									if attached {INTERCEPTOR} current then
+--										model.test_double_interceptor_bug.append ("   PLACEDBACK: " + id.out)
+--									end
+--								---------------------
+
+
+
 							end
 						end
 					end
@@ -159,13 +204,27 @@ feature -- Commands
 
 						-- STOPP BEFORE ENEMY THIS IS CHANGED AND THE VARIABLE THING IN THE UNTIL
 						if stopped_before_enemy then
-							model.toggle_enemy_action_msg.append("%N    " + moves_msg(row, lower + 1)) -- stops before that
-							set_location (row, lower + 1)
+							if lower < row then
+								lower := lower - 1
+							else
+								lower := lower + 1
+							end
+							model.toggle_enemy_action_msg.append("%N    " + moves_msg(row, lower)) -- stops before that
+							set_location (row, lower)
 
 							if not outside_board then
 			--					toggle_proj_msg.append ("%N    " + proj.stats_out)
 								model.grid[location.row][location.col] := symbol
 								put_in_struct -- PUT INTO HASHTABLE
+
+
+--								----------TEST
+--								if attached {INTERCEPTOR} current then
+--									model.test_double_interceptor_bug.append ("   PLACEDBACK: " + id.out)
+--								end
+--								---------------------
+
+
 							end
 						end
 					end

@@ -474,3 +474,65 @@ ROOT                make @16
 ROOT                root's creation                                     
 <00000000065C25A8>                         Routine failure.              Exit
 -------------------------------------------------------------------------------
+
+space_defender_2: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+LINKED_LIST         i_th @2                valid_index:                 
+<000000000644E138>  (From CHAIN)           Precondition violated.        Fail
+-------------------------------------------------------------------------------
+STARFIGHTER         fire @13                                            
+<000000000644E198>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+IN_GAME             execute_starfighter @8                              
+<0000000006450428>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+IN_GAME             game_update @6                                      
+<0000000006450428>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ETF_FIRE            fire @4                                             
+<000000000647EA18>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           fast_call                                           
+<000000000647EBF8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           call @3                                             
+<000000000647EBF8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           apply @2                                            
+<000000000647EBF8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ETF_ABSTRACT_UI     run_input_commands @2                               
+<0000000006450848>  (From ETF_ABSTRACT_UI_INTERFACE)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+ETF_SOFTWARE_OPERATION
+                    execute @9             
+<000000000644DFE8>  (From ETF_SOFTWARE_OPERATION_INTERFACE)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+ROOT                exec @3                                             
+<000000000644B5A8>  (From ETF_CMD_LINE_ROOT_INTERFACE)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+ROOT                handle_batch_mode @5                                
+<000000000644B5A8>  (From ETF_CMD_LINE_ROOT_INTERFACE)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+ROOT                make @27                                            
+<000000000644B5A8>  (From ETF_CMD_LINE_ROOT_INTERFACE)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+ROOT                make @16                                            
+<000000000644B5A8>  (From ETF_ROOT_INTERFACE)
+                                           Routine failure.              Rescue
+-------------------------------------------------------------------------------
+ROOT                root's creation                                     
+<000000000644B5A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------

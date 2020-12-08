@@ -40,8 +40,10 @@ make
 
 
 			-- PUTS INTO HASHTABLE IN MODEL
-			put_in_struct
+--			put_in_struct
 		end
+
+feature -- Commands
 
 	execute
 		do
@@ -85,62 +87,87 @@ make
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
 				proj.set_move_distance (2) -- 2 left per turn
-				model.add_projectile (proj)
+--				model.add_projectile (proj)
 
-				enemy_action(proj)
+				proj.spawn_collision
+				model.toggle_enemy_action_msg.append (proj.collision_msg)
+--				enemy_action(proj)
 			end
 
+		end
+
+	find_nearby_enemies_heal -- none
+		do
+			across
+				model.enemies is l_e
+			loop
+				if
+--					l_e /= Current
+--					and then
+					l_e.alive and not l_e.outside_board
+					and then
+					(location.row - l_e.location.row).abs + (location.col - l_e.location.col).abs <= attributes.vision
+				then
+					model.toggle_enemy_action_msg.append ("%N      The Pylon heals " + l_e.name + "(id:" + l_e.id.out + ") at location " + l_e.location_out + " for 10 damage.") -- C
+					l_e.current_attributes.set_health (l_e.current_attributes.health + 10)
+					if l_e.current_attributes.health > l_e.attributes.health then
+						l_e.current_attributes.set_health (l_e.attributes.health) -- cap health
+					end
+				end
+			end
 		end
 
 	-- heal enemies within vision by 10+
-	find_nearby_enemies_heal -- none
-		local
-			i : INTEGER
-			k : INTEGER
+	-- smh should have just across'd the loop, instead of making a search
+--	find_nearby_enemies_heal -- none
+--		local
+--			i : INTEGER
+--			k : INTEGER
 
-		do
-			from i := 1 until i > model.grid.count loop
-				from k := 1 until k > model.grid[i].count loop
-					if (location.row - i).abs + (location.col -k).abs <= attributes.vision  then
-						-- inside vision
-						if model.locations.has_key ([location.row, location.col - 1]) then
-							if
-								attached {ENEMY} model.locations.found_item as l_e
-								and then l_e.alive
-							then
-								-- Heal enemy
-								l_e.current_attributes.set_health (l_e.current_attributes.health + 10)
-								if l_e.current_attributes.health > l_e.attributes.health then
-									l_e.current_attributes.set_health (l_e.attributes.health) -- cap health
-								end
-							end
-						end
-					else
-						-- outside vision
-					end
-					k := k + 1
-				end
-				i := i + 1
-			end
+--		do
+--			from i := 1 until i > model.grid.count loop
+--				from k := 1 until k > model.grid[i].count loop
+--					if (location.row - i).abs + (location.col -k).abs <= attributes.vision  then
+--						-- inside vision
+--						if model.locations.has_key ([i, k]) then
+--							if
+--								attached {ENEMY} model.locations.found_item as l_e
+--								and then l_e.alive
+--							then
+--								-- Heal enemy
+--								--e.g The Pylon heals Interceptor(id:4) at location [G,26] for 10 damage.
+--								model.toggle_enemy_action_msg.append ("%N      The Pylon heals " + l_e.name + "(id:" + l_e.id.out + ") at location " + l_e.location_out + " for 10 damage.") -- C
+--								l_e.current_attributes.set_health (l_e.current_attributes.health + 10)
+--								if l_e.current_attributes.health > l_e.attributes.health then
+--									l_e.current_attributes.set_health (l_e.attributes.health) -- cap health
+--								end
+--							end
+--						end
+--					else
+--						-- outside vision
+--					end
+--					k := k + 1
+--				end
+--				i := i + 1
+--			end
+--		end
 
-		end
-
-	enemy_action(proj : ENEMY_PROJ)
-		local
-			msg : STRING
-		do
-			if not proj.outside_board then -- print on grid
-				model.grid[proj.location.row][proj.location.col] := "<"
+--	enemy_action(proj : ENEMY_PROJ)
+--		local
+--			msg : STRING
+--		do
+--			if not proj.outside_board then -- print on grid
+--				model.grid[proj.location.row][proj.location.col] := "<"
 
 
-				-- THESE 2 LINES WERE UNCOMMENTED 2020-12-05
---				msg := "A enemy projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
+--				-- THESE 2 LINES WERE UNCOMMENTED 2020-12-05
+----				msg := "A enemy projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
 
-				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
---				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
-			else
-				-- dont print
---				msg := "OUTSIDEEE DA THING"
-			end
-	end
+--				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
+----				model.toggle_proj_msg.append ("%N    " + proj.stats_out)
+--			else
+--				-- dont print
+----				msg := "OUTSIDEEE DA THING"
+--			end
+--	end
 end

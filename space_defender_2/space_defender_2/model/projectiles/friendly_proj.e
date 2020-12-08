@@ -182,6 +182,11 @@ feature -- Queries
 						l_e.set_alive (false) -- Enemy got destroyed wrekt 360 no scope
 						l_e.current_attributes.set_health (0)
 						collision_msg.append ("%N      The " + l_e.name + " at location " + l_e.location_out + " has been destroyed.")
+					else
+						---------------
+						model.grid[l_e.location.row][l_e.location.col] := l_e.symbol
+						---------------
+
 					end
 
 				end
@@ -202,6 +207,13 @@ feature -- Queries
 						model.grid[l_s.location.row][l_s.location.col] := "X"
 						-- Need to make game end for next state
 						model.set_game_over(True)
+					else
+
+						---------------
+						model.grid[l_s.location.row][l_s.location.col] := l_s.symbol
+						---------------
+
+
 					end
 
 				end

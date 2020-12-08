@@ -38,21 +38,35 @@ feature {NONE} -- Initialization
 			reset_current_attributes -- current_attributes := attributes.deep_twin
 --			current_attributes.set_projectile_dmg (100) -- no projectiles
 
-
+			dont_move := False
 			-- PUTS INTO HASHTABLE IN MODEL
-			put_in_struct
+--			put_in_struct
+		end
+
+feature -- Attributes
+	dont_move : BOOLEAN
+
+feature -- Commands
+
+	set_dont_move
+		do
+			dont_move := True
 		end
 
 	execute
 		do
-			if not model.command_msg.is_equal ("fire") then -- ENDS TURN ON PASS
-				regen
+			if not dont_move then
+				if not model.command_msg.is_equal ("fire") then -- ENDS TURN ON FIRE
+					regen
 
-				if can_see_starfighter then
-					seen
-				else
-					not_seen
+					if can_see_starfighter then
+						seen
+					else
+						not_seen
+					end
 				end
+			else
+				dont_move := False
 			end
 		end
 
@@ -104,18 +118,23 @@ feature {NONE} -- Initialization
 				remove_from_struct -- REMOVE FROM HASHTABLE
 				collision (row, col)
 
+				----
+--				model.test_double_interceptor_bug.append ("%N   movetospecific: " + id.out)
+				----
+
 				if alive and not stopped_before_enemy then
 					model.toggle_enemy_action_msg.append("%N    " + moves_msg(row, col))
 					set_location (row, col)
 
-					if not outside_board then
+					-- NEED TO DO COLLISION CHECKING HERE AS WELL***********8
+					if not outside_board and alive then
 	--					toggle_proj_msg.append ("%N    " + proj.stats_out)
 						model.grid[location.row][location.col] := symbol
 						put_in_struct -- PUT INTO HASHTABLE
+--						model.test_double_interceptor_bug.append ("PLACED BACK IN")
 					end
-
-					-- NEED TO DO COLLISION CHECKING HERE AS WELL***********8
 				end
+
 
 				if stopped_before_enemy then
 					stopped_before_enemy := false
