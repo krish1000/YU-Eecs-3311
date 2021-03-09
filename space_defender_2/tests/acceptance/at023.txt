@@ -1,0 +1,13 @@
+--SNIPE
+play(10,26,2,2,2,2,2)
+setup_select(3)
+setup_next(5)
+toggle_debug_mode
+move(A,3)
+fire
+move(C,2)
+--fire
+pass
+pass
+--pass
+--pass

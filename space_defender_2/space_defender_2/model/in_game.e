@@ -105,19 +105,14 @@ feature -- Commands
 			model := mda.m
 			model.state_increase
 
-			execute_friendlies -- move friendly projectiles first
+			execute_friendlies -- phase 1 move friendly projectiles first
 			execute_enemy_projs -- phase 2 enemy projs
-			-- insert star fighter act phase 3 *********
-			execute_preemptive_enemy_actions -- HAS TO BE BEFORE STARFIGHTER ACTION
-			execute_starfighter
+			execute_preemptive_enemy_actions -- preemptive actions, done before starfighter
+			execute_starfighter -- phase 3 starfighter action
+			execute_enemies -- phase 5 enemy act (combined with 4 & 6 enemy vision phase)
+			enemy_spawn -- phase 7 enemy spawn
 
-			-- insert enemy vision update phase 4 *******
---			execute_preemptive_enemy_actions -- moved 2020-12-07
-			execute_enemies -- phase 5 enemy act
-			-- insert enemy vision update phase 6 *******
-			enemy_spawn -- phase 6 enemy spawn
-
-			-- NEED TO PUT OUT STATUS MSGS, BUT FIRST GOING TO DO COLLISION SHIEZ
+			-- Projectile status msgs are applied after
 			across
 				model.projectiles is proj
 			loop
@@ -207,7 +202,7 @@ feature -- Commands
 			across
 				model.enemies is enemy
 			loop
-				if enemy.alive and not enemy.outside_board then
+				if enemy.alive and not enemy.outside_board  then
 					enemy.preemptive_action
 				end
 			end
@@ -222,12 +217,12 @@ feature -- Commands
 				model.enemies is enemy
 			loop
 --				grid[proj.location.row][proj.location.col] := "_"
-				if enemy.alive then
+				if enemy.alive and enemy.current_attributes.health > 0 then -- ADDED and enemy.current_attributes.health > 0
 					enemy.execute
 					if not enemy.outside_board then
 
 						model.toggle_enemy_msg.append (enemy.stats_out)
-						model.toggle_enemy_action_msg.append (enemy.collision_msg) -- order is not proper for when it fires
+--						model.toggle_enemy_action_msg.append (enemy.collision_msg) -- order is not proper for when it fires
 					end
 				end
 			end

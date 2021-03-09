@@ -61,6 +61,8 @@ feature -- Commands
 			-- None
 		end
 
+feature {NONE} -- Hidden
+
 	not_seen
 
 		do

@@ -105,6 +105,7 @@ feature {NONE} -- Initialization
 	fire -- NONE
 		do
 			current_attributes.set_armour (current_attributes.armour + 1) -- increase armour by 1
+			model.toggle_enemy_action_msg.append ("%N    A Fighter(id:" + id.out + ") gains 1 armour.")
 			-- do not end turn
 
 		end
@@ -121,12 +122,9 @@ feature {NONE} -- Initialization
 				proj := create {ENEMY_PROJ}.make(location.row, location.col - 1)
 				proj.set_current_damage (current_attributes.projectile_dmg)
 				proj.set_move_distance (10) -- moves 10 left
---				model.add_projectile (proj)
 
 				proj.spawn_collision
 				model.toggle_enemy_action_msg.append (proj.collision_msg)
---				enemy_action(proj)
-
 			end
 			-- END TURN*******
 		end

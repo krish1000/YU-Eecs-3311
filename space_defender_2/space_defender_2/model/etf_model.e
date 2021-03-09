@@ -58,6 +58,7 @@ feature {NONE} -- Initialization
 			state := 0
 			errorState := 0
 			welcome := True
+			exited := False
 			create error_msg.make_empty
 			create test_msg.make_empty
 			create collision_test_msg.make_empty
@@ -88,6 +89,7 @@ feature {NONE} -- Initialization
 --			create starfighter_location -- empty tuple
 --			create starfighter.make
 --			starfighter_location := starfighter.starfighter_location
+			create score.make
 		end
 
 	transition_next_table
@@ -150,6 +152,7 @@ feature -- model attributes
 	---- TOGGLE ----
 	toggle_debug : BOOLEAN
 	toggle_msg : STRING
+	exited : BOOLEAN
 
 	toggle_enemy_msg : STRING
 	toggle_proj_msg : STRING
@@ -199,6 +202,9 @@ feature -- model attributes
 	----- ENEMIES --------
 	enemies : LINKED_LIST[ENEMY]
 
+	----- SCORE -----
+	score : SCORE
+
 feature -- Starfighter Attributes
 --	attributes : ATTRIBUTE_VALUES
 --	current_attributes : ATTRIBUTE_VALUES
@@ -233,6 +239,11 @@ feature -- model state changes
 		do
 			test_msg := msg
 		end
+
+	set_toggle_debug(b : BOOLEAN)
+		do
+			toggle_debug := b
+		end
 feature -- model setter commands
 	update_states_index(l_index : INTEGER)
 		do
@@ -264,7 +275,7 @@ feature -- model queries
 				", Move:" + a.move.out + ", Move Cost:" + a.move_cost.out + ", location:[" + letter[starfighter_location.row] + ","+ starfighter_location.col.out  + "]")
 		    Result.append("%N      Projectile Pattern:" + app.states[1].get_type + ", Projectile Damage:" + a.projectile_dmg.out +", Projectile Cost:" + a.projectile_cost.out + " (" + a.get_projectile_cost_type + ")")
 		    Result.append("%N      Power:" + app.states[4].get_type)
-			Result.append("%N      score:0") -- NEED TO IMPLMEMENT SCORE!!!
+			Result.append("%N      score:" + score.getscore.out) -- NEED TO IMPLMEMENT SCORE!!!
 		end
 
 	toggle_out: STRING
@@ -616,6 +627,11 @@ feature -- model operations
 --			-- 3 Pass
 --			-- 4 Special
 --		end
+	abort
+		do
+			welcome := False
+			exited := True
+		end
 
 	toggle_debug_mode
 		do
@@ -697,13 +713,18 @@ feature -- queries
 --			Result.append ("%N  TESTMSG: "+ command_msg +  " " + test_msg)
 --			Result.append ("%N  " + collision_test_msg)
 --			Result.append (hash_out)
-			Result.append (test_double_interceptor_bug)
+--			Result.append (test_double_interceptor_bug)
 			-----------------------------------
 
 			if welcome then -- welcome msg
 --				Result.append ("  state:not started, normal, ok") -- temporary
 				Result.append ("%N  Welcome to Space Defender Version 2.")
 				welcome := False
+			end
+
+			if exited then
+				Result.append ("%N  Exited from game.")
+				exited := False
 			end
 
 			if game_over then

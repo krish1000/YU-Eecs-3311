@@ -41,7 +41,12 @@ feature -- Queries
 
 	move_msg(previous_location : STRING; current_location : STRING) : STRING
 		do
-			Result := "A friendly projectile(id:-" + id.out + ") moves: " + previous_location + " -> " + current_location
+			if previous_location.is_equal (current_location) then
+				Result := "A friendly projectile(id:-" + id.out + ") stays at: " + previous_location
+			else
+				Result := "A friendly projectile(id:-" + id.out + ") moves: " + previous_location + " -> " + current_location
+			end
+
 		end
 
 	move_outside_msg(previous_location : STRING) : STRING

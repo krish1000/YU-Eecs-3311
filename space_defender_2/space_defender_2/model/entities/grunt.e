@@ -63,17 +63,19 @@ feature -- Commands
 
 	preemptive_action
 		do
-			-- if sf passes, increase both hp and total hp by 10	
-
-			-- if sf special, increase both hp and totalhp by 20
-			-- TURN DOESNT END FOR BOTH^^
-			if model.command_msg.is_equal("pass") then
-				pass
---				model.test_msg.append("PASS IN GRUNTTT") --------------------------
-			elseif model.command_msg.is_equal("special") then
-				special
+			if alive and not outside_board then
+				-- if sf passes, increase both hp and total hp by 10
+				if model.command_msg.is_equal("pass") then
+					pass
+				-- if sf special, increase both hp and totalhp by 20
+				elseif model.command_msg.is_equal("special") then
+					special
+				end
 			end
+			-- TURN DOESNT END FOR BOTH^
 		end
+
+feature {NONE} -- Hidden
 
 	seen
 		local
@@ -118,6 +120,7 @@ feature -- Commands
 			end
 
 		end
+
 
 	pass
 		do

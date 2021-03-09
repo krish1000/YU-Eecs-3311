@@ -29,6 +29,7 @@ feature {NONE} -- Initialization
 			create location
 			create attributes.make
 			create current_attributes.make
+			create msg.make_empty
 		end
 
 feature -- Attributes
@@ -37,6 +38,7 @@ feature -- Attributes
 --	starfighter_attributes : ATTRIBUTE_VALUES -- declaring attributes and currrent attributes in parent class
 	attributes : ATTRIBUTE_VALUES
 	current_attributes : ATTRIBUTE_VALUES
+	msg : STRING
 feature -- Commands
 
 	reset_current_attributes
@@ -157,7 +159,7 @@ feature -- Commands
 		local
 			proj : PROJECTILE
 			projectile_type : INTEGER
-			msg : STRING
+--			msg : STRING
 		do
 			create msg.make_empty
 			projectile_type := model.app.states[1].select_value
@@ -173,16 +175,43 @@ feature -- Commands
 			end
 
 			if projectile_type = 1 then -- STANDARD
---				model.add_projectile (create {STANDARD}.make)
-				proj := create {STANDARD}.make
+				model.add_projectile (create {STANDARD}.make)
+				proj := model.projectiles[model.projectiles.count]
+--				proj.spawn_collision
+				proj_message(proj)
 			elseif projectile_type = 2 then
 
 			elseif projectile_type = 3 then
-
+				model.add_projectile (create {SNIPE}.make)
+				proj := model.projectiles[model.projectiles.count]
+				proj.set_location (location.row, location.col + 1)
+				-- CHECK SPAWN COLLISION
+				proj_message(proj)
 			elseif projectile_type = 4 then
+				-- Top rocket
+--				proj := create {ROCKET}.make
+				model.add_projectile (create {ROCKET}.make)
+				proj := model.projectiles[model.projectiles.count]
+				proj.set_location (location.row - 1, location.col - 1)
+--				proj.spawn_collision
 
+--				proj.collision (location.row - 1, location.col - 1)
+
+				proj_message(proj)
+				-- Bottom rocket
+				model.add_projectile (create {ROCKET}.make)
+				proj := model.projectiles[model.projectiles.count]
+				proj.set_location (location.row + 1, location.col - 1)
+--				proj.spawn_collision
+--				model.add_projectile (proj)
+--				proj.collision (location.row - 1, location.col - 1)
+				proj_message(proj)
 			elseif projectile_type = 5 then
-
+				model.add_projectile (create {SPLITTER}.make)
+				proj := model.projectiles[model.projectiles.count]
+				proj.set_location (location.row, location.col + 1) -- could do it in make
+				proj.put_in_struct
+				proj_message(proj)
 			end
 
 --			model.projectiles.force (create {STANDARD}.make, 1)
@@ -190,21 +219,24 @@ feature -- Commands
 
 
 
+
+			model.star_action_msg_update ("The Starfighter(id:0) fires at location " + location_out + "." + msg) -- C
+		end
+
+	proj_message(proj : PROJECTILE)
+		do
 			if attached proj and then not proj.outside_board then -- print on grid
-				proj.spawn_collision
+--				proj.spawn_collision
 				model.grid[proj.location.row][proj.location.col] := "*"
 --				msg := "A friendly projectile(id:-" + model.projectiles.count.out +") spawns at location " + proj.location_out + "." -- C
-				msg := "A friendly projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + "." -- C
+				msg.append("%N      A friendly projectile(id:-" + proj.id.out +") spawns at location " + proj.location_out + ".") -- C
 
 --				-- ADDING THE PROJECTILE MSG AS SOON AS FIRED
 --				model.toggle_proj_msg.append ("%N    " + proj.stats_out) -- COMMMENTED OUT 2020-12-06
 			else
 				-- dont print
-				msg := "OUTSIDEEE DA THING"
+				msg.append("%N      A friendly projectile(id:-" + proj.id.out +") spawns at location out of board.")
 			end
-
-			model.star_action_msg_update ("The Starfighter(id:0) fires at location " + location_out + ".%N      "
-				+ msg) -- C
 		end
 
 	special
@@ -212,6 +244,7 @@ feature -- Commands
 --			la : ATTRIBUTE_VALUES
 --			ca : ATTRIBUTE_VALUES
 			selected_value : INTEGER
+			temp : INTEGER
 		do
 --			la := attributes
 --			ca := current_attributes
@@ -224,17 +257,60 @@ feature -- Commands
 				--The Starfighter(id:0) uses special, teleporting to: [C,1]
 				current_attributes.set_energy (current_attributes.energy - 50)
 				model.grid[location.row][location.col] := "_" -- clear previous location
-				set_location (model.grid.count //2 + model.grid.count \\ 2, 1)
-				model.grid[location.row][location.col] := "S"
-				model.star_action_msg_update ("The Starfighter(id:0) uses special, teleporting to: " + location_out)
-			elseif selected_value = 2 then -- repair 50 energy
+				model.star_action_msg_update ("The Starfighter(id:0) uses special, teleporting to: " + location_string (model.grid.count //2 + model.grid.count \\ 2, 1))
 
+				if model.locations.has_key ([model.grid.count //2 + model.grid.count \\ 2, 1]) then
+					if attached {ENTITY} model.locations.found_item as l_item then
+						modify_collision (l_item)
+					end
+				end
+
+
+				if alive then
+					set_location (model.grid.count //2 + model.grid.count \\ 2, 1)
+					model.grid[location.row][location.col] := "S"
+				end
+
+
+			elseif selected_value = 2 then -- repair 50 energy
+				current_attributes.set_health (current_attributes.health + 50) -- +50 hp
+				model.star_action_msg_update ("The Starfighter(id:0) uses special, gaining 50 health.") -- C
 			elseif selected_value = 3 then -- overcharge up to 50 hp
 				-- DO THIS*******************************************************
-			elseif selected_value = 4 then -- deploy drones 100 energy
+				if current_attributes.health < 51 then
+					temp := current_attributes.health - 1
+					current_attributes.set_health (1)
+					current_attributes.set_energy (current_attributes.energy + temp*2) -- 2 energy for 1hp
+					model.star_action_msg_update ("The Starfighter(id:0) uses special, gaining " + (temp*2).out + " energy at the expense of " + temp.out + " health.") -- C
+				else
+					current_attributes.set_health (current_attributes.health - 50)
+					current_attributes.set_energy (current_attributes.energy + 100)
+					model.star_action_msg_update ("The Starfighter(id:0) uses special, gaining 100 energy at the expense of 50 health.") -- C
+				end
+			elseif selected_value = 4 then -- deploy drones 100 energy clears all projectiles
+				current_attributes.set_energy (current_attributes.energy - 100)
+				model.star_action_msg_update ("The Starfighter(id:0) uses special, clearing projectiles with drones.") -- C
+				across
+					model.projectiles is p
+				loop
+					if p.alive and not p.outside_board then
+						p.set_alive(false)
+						model.toggle_star_action_msg.append ("%N      A projectile(id:-" + p.id.out + ") at location " + p.location_out + " has been neutralized.")
+					end
 
+				end
 			elseif selected_value = 5 then -- orbital strik 100 energy
-
+				current_attributes.set_energy (current_attributes.energy - 100)
+				across
+					model.enemies is e
+				loop
+					if e.alive and not e.outside_board then
+						e.current_attributes.set_health(e.current_attributes.health - (100 - e.current_attributes.armour))
+						if e.current_attributes.health <= 0 then
+							e.set_alive(false)
+						end
+					end
+				end
 			end
 
 		end

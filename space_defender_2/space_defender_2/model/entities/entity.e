@@ -53,6 +53,19 @@ feature -- Commands
 				remove_from_struct -- removed from hashtable
 				model.grid[location.row][location.col] := "_" -- removed frmo board
 				previously_alive := TRUE
+
+				-- add to scores
+				if attached {GRUNT} current then
+					model.score.add_score (2) -- silver
+				elseif attached {FIGHTER} current then
+					model.score.add_score (3) -- gold
+				elseif attached {INTERCEPTOR} current then
+					model.score.add_score (1) -- bronze
+				elseif attached {CARRIER} current then
+					model.score.add_score (create {FOCUS}.make(4)) -- automatically adds gold
+				elseif attached {PYLON} current then
+					model.score.add_score (create {FOCUS}.make(3)) -- automatically adds bronze
+				end
 			end
 		end
 

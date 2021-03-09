@@ -1,0 +1,13 @@
+--SPLITTER
+play(10,10,2,2,2,2,2)
+setup_select(5)
+setup_next(5)
+toggle_debug_mode
+move(A,2)
+fire
+move(C,2)
+--fire
+pass
+pass
+--pass
+--pass

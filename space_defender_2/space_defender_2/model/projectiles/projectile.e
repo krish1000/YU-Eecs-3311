@@ -88,14 +88,15 @@ feature -- commands
 			model.add_projectile (Current)
 
 			-- COllision with projectiles n stuff
-			if model.locations.has_key ([location.row, location.col]) then -- Entity exists in the spawning location, either friendlyproj/enemyproj/starfighter
---				if  then
---					
---				end
+			if model.locations.has_key ([location.row, location.col]) and not outside_board then -- Entity exists in the spawning location, either friendlyproj/enemyproj/starfighter
 				if attached {ENTITY} model.locations.found_item as l_item then
 					modify_collision (l_item)
 				end
 			end
+
+--			---- TEST
+--			model.test_double_interceptor_bug.append ("%N  " + location_out)
+--			-------------
 
 			if alive and not outside_board then
 				model.grid[location.row][location.col] := symbol -- UPDATE grid
